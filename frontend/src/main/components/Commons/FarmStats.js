@@ -1,5 +1,7 @@
+import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import React from "react";
 import { Card } from "react-bootstrap";
+import Cash from './../../../assets/Cash.png';
 
 const FarmStats = ({userCommons}) => {
    
@@ -9,7 +11,8 @@ const FarmStats = ({userCommons}) => {
         <Card.Body>
             {/* update total wealth and cow health with data from fixture */}
             <Card.Text>
-                [ADD PIC HERE] 
+                <img src={{ backgroundSize: 'cover', backgroundImage: `url(${Cash})` }}></img>
+                {/*<img src={Cash} alt="Cash" width="200" height="200"></img>*/} 
             </Card.Text>
             <Card.Text>
                 Total Wealth: ${userCommons?.totalWealth}
