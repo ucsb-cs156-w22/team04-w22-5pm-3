@@ -73,6 +73,17 @@ public class ProfitsController extends ApiController {
         return profit;
     }
 
+    @ApiOperation(value = "Get a single profit (no matter who it belongs to, admin only)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/admin")
+    public Profit getProfitById_admin(
+            @ApiParam("id") @RequestParam Long id) {
+        Profit profit = profitRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+
+        return profit;
+    }
+
     @ApiOperation(value = "Get all profits belonging to a user commons (if commons belongs to current user)")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all/commons")
@@ -99,17 +110,6 @@ public class ProfitsController extends ApiController {
         Iterable<Profit> profits = profitRepository.findAllByUserCommonsId(userCommonsId);
 
         return profits;
-    }
-
-    @ApiOperation(value = "Get a single profit (no matter who it belongs to, admin only)")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin")
-    public Profit getProfitById_admin(
-            @ApiParam("id") @RequestParam Long id) {
-        Profit profit = profitRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
-
-        return profit;
     }
 
     @ApiOperation(value = "Create a new Profit (associated with a commons that belongs to the user)")
