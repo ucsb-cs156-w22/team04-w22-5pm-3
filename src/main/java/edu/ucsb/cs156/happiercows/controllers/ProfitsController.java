@@ -1,10 +1,12 @@
 package edu.ucsb.cs156.happiercows.controllers;
 
 import edu.ucsb.cs156.happiercows.entities.Profit;
+import edu.ucsb.cs156.happiercows.entities.Commons;
 import edu.ucsb.cs156.happiercows.entities.User;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
 import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import edu.ucsb.cs156.happiercows.models.CurrentUser;
+import edu.ucsb.cs156.happiercows.repositories.CommonsRepository;
 import edu.ucsb.cs156.happiercows.repositories.ProfitRepository;
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import io.swagger.annotations.Api;
@@ -43,6 +45,9 @@ public class ProfitsController extends ApiController {
     @Autowired
     UserCommonsRepository userCommonsRepository;
 
+    @Autowired
+    CommonsRepository commonsRepository;
+
     @ApiOperation(value = "List all profits")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/all")
@@ -59,7 +64,7 @@ public class ProfitsController extends ApiController {
         Long userId = getCurrentUser().getUser().getId();
 
         Profit profit = profitRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
 
         // Ensure that user has access to specified profit
         if (userId != profit.getUserCommons().getUserId())
@@ -83,15 +88,16 @@ public class ProfitsController extends ApiController {
     @GetMapping("/admin/all/commons")
     public Iterable<Profit> allProfitsByUserCommonsId_admin(
             @ApiParam("userCommonsId") @RequestParam Long userCommonsId) {
-        
-              // First ensure that user has access to specified user commons
+
+        // First ensure that user has access to specified user commons
         Long userId = getCurrentUser().getUser().getId();
         UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(userCommonsId, userId)
-            .orElseThrow(
-                () -> new EntityNotFoundException(UserCommons.class, "userCommonsId", userCommonsId, "userId", userId));
+                .orElseThrow(
+                        () -> new EntityNotFoundException(UserCommons.class, "userCommonsId", userCommonsId, "userId",
+                                userId));
 
         Iterable<Profit> profits = profitRepository.findAllByUserCommonsId(userCommonsId);
-        
+
         return profits;
     }
 
@@ -101,12 +107,12 @@ public class ProfitsController extends ApiController {
     public Profit getProfitById_admin(
             @ApiParam("id") @RequestParam Long id) {
         Profit profit = profitRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
 
         return profit;
     }
 
-    @ApiOperation(value = "Create a new Profit")
+    @ApiOperation(value = "Create a new Profit (associated with a commons that belongs to the user)")
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/post")
     public Profit postProfit(
@@ -115,9 +121,31 @@ public class ProfitsController extends ApiController {
             @ApiParam("userCommonsId") @RequestParam long userCommonsId) {
         Long userId = getCurrentUser().getUser().getId();
 
+        // First ensure that user has access to specified user commons
         UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(userCommonsId, userId)
-        .orElseThrow(
-            () -> new EntityNotFoundException(UserCommons.class, "commonsId", userCommonsId, "userId", userId));
+                .orElseThrow(
+                        () -> new EntityNotFoundException(UserCommons.class, "commonsId", userCommonsId, "userId",
+                                userId));
+
+        Profit p = new Profit();
+        p.setUserCommons(userCommons);
+        p.setProfit(profit);
+        p.setTimestamp(timestamp);
+        Profit savedProfit = profitRepository.save(p);
+        return savedProfit;
+    }
+
+    @ApiOperation(value = "Create a new Profit (regardless of ownership)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/admin/post")
+    public Profit postProfit_admin(
+            @ApiParam("profit") @RequestParam long profit,
+            @ApiParam("timestamp") @RequestParam long timestamp,
+            @ApiParam("userCommonsId") @RequestParam long userCommonsId) {
+
+        // Ensure that specified user commons exists (ownership does not matter)
+        UserCommons userCommons = userCommonsRepository.findById(userCommonsId)
+                .orElseThrow(() -> new EntityNotFoundException(UserCommons.class, userCommonsId));
 
         Profit p = new Profit();
         p.setUserCommons(userCommons);
@@ -133,14 +161,14 @@ public class ProfitsController extends ApiController {
     public Object deleteProfit(
             @ApiParam("id") @RequestParam Long id) {
         Long userId = getCurrentUser().getUser().getId();
-        
+
         Profit profit = profitRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
 
         // Ensure that profit belongs to user before deleting
         if (userId != profit.getUserCommons().getUserId())
             throw new EntityNotFoundException(Profit.class, id);
-      
+
         profitRepository.delete(profit);
 
         return genericMessage("Profit with id %s deleted".formatted(id));
@@ -152,7 +180,7 @@ public class ProfitsController extends ApiController {
     public Object deleteProfit_Admin(
             @ApiParam("id") @RequestParam Long id) {
         Profit profit = profitRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
 
         profitRepository.delete(profit);
 
@@ -168,7 +196,7 @@ public class ProfitsController extends ApiController {
         Long userId = getCurrentUser().getUser().getId();
 
         Profit profit = profitRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
 
         // Ensure that profit belongs to user before updating
         if (userId != profit.getUserCommons().getUserId())
@@ -189,7 +217,7 @@ public class ProfitsController extends ApiController {
             @ApiParam("id") @RequestParam Long id,
             @RequestBody @Valid Profit incomingProfit) {
         Profit profit = profitRepository.findById(id)
-          .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Profit.class, id));
 
         profit.setProfit(incomingProfit.getProfit());
         profit.setTimestamp(incomingProfit.getTimestamp());
