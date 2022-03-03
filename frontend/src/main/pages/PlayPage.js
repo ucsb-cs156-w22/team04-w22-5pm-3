@@ -47,9 +47,9 @@ export default function PlayPage() {
       [`/api/profits/all/commons?userCommonsId=${commonsId}`],
       {  // Stryker disable next-line all : GET is the default, so changing this to "" doesn't introduce a bug
         method: "GET",
-        url: "/api/profits/all/common",
+        url: "/api/profits/all/commons",
         params: {
-          commonsId: commonsId
+          userCommonsId: commonsId
         }
       }
     );
