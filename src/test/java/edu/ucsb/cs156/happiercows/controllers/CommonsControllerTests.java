@@ -130,5 +130,55 @@ public class CommonsControllerTests extends ControllerTestCase {
 
     assertEquals(responseString, cAsJson);
   }
+  @WithMockUser(roles = { "USER" })
+    @Test
+    public void getExistingCommonsTest() throws Exception {
+
+        // arrange
+      Commons c = Commons.builder()
+        .id(2L)
+        .name("Example Commons")
+        .build();
+
+      UserCommons uc = UserCommons.builder()
+        .userId(1L)
+        .commonsId(2L)
+        .totalWealth(0)
+        .build();
+
+      String requestBody = mapper.writeValueAsString(uc);
+
+      when(commonsRepository.findById(eq(2L))).thenReturn(Optional.of(c));
+
+        // act
+        MvcResult response = mockMvc
+        .perform(get("/api/commons?id=2").with(csrf()).contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8").content(requestBody))
+        .andExpect(status().isOk()).andReturn();
+
+        // assert
+
+        String responseString = response.getResponse().getContentAsString();
+        String cAsJson = mapper.writeValueAsString(c);
+
+        assertEquals(responseString, cAsJson);
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void getFakeCommonsTest() throws Exception {
+
+        // arrange
+
+        when(commonsRepository.findById(eq(7L))).thenReturn(Optional.empty());
+
+        // act
+        MvcResult response = mockMvc.perform(get("/api/commons?id=7"))
+                .andExpect(status().isNotFound()).andReturn();
+
+        // assert
+    }
+
+
 
 }
