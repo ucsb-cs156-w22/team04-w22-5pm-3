@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -58,43 +59,121 @@ public class ProfitsControllerTests extends ControllerTestCase {
   @Autowired
   private ObjectMapper objectMapper;
 
-  @WithMockUser(roles = { "USER" })
+  @WithMockUser(roles = { "ADMIN" })
   @Test
-  public void get_profits_test() throws Exception {
-    UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(1).build();
-    Profit expectedProfit = Profit.builder().id(42L).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
-    when(profitRepository.findById(42L)).thenReturn(Optional.of(expectedProfit));
+  public void get_profits_admin_all_test() throws Exception {
+    List<Profit> expectedProfits = new ArrayList<Profit>();
+    UserCommons uc1 = UserCommons.builder().id(1).commonsId(2).userId(1).build();
+    Profit p1 = Profit.builder().id(42).profit(100).timestamp(12).userCommons(uc1).build();
+    Profit p2 = Profit.builder().id(43).profit(200).timestamp(12).userCommons(uc1).build();
+    UserCommons uc2 = UserCommons.builder().id(1).commonsId(2).userId(2).build();
+    Profit p3 = Profit.builder().id(44).profit(300).timestamp(12).userCommons(uc2).build();
 
-    MvcResult response = mockMvc.perform(get("/api/profits?id=42"))
+    expectedProfits.add(p1);
+    expectedProfits.add(p2);
+    expectedProfits.add(p3);
+    when(profitRepository.findAll()).thenReturn(expectedProfits);
+
+    MvcResult response = mockMvc
+        .perform(get("/api/profits/admin/all"))
         .andExpect(status().isOk()).andReturn();
 
-    verify(profitRepository, times(1)).findById(42L);
+    verify(profitRepository, times(1)).findAll();
 
     String responseString = response.getResponse().getContentAsString();
-    Profit actualProfit = objectMapper.readValue(responseString, Profit.class);
-    assertEquals(actualProfit, expectedProfit);
+    List<Profit> actualProfits = objectMapper.readValue(responseString, new TypeReference<List<Profit>>() {
+    });
+    assertEquals(actualProfits, expectedProfits);
+  }
+
+  // @WithMockUser(roles = { "USER" })
+  // @Test
+  // public void get_profits_test() throws Exception {
+  // UserCommons expectedUserCommons =
+  // UserCommons.builder().id(1).commonsId(2).userId(1).build();
+  // Profit expectedProfit =
+  // Profit.builder().id(42L).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+  // when(profitRepository.findById(42L)).thenReturn(Optional.of(expectedProfit));
+
+  // MvcResult response = mockMvc.perform(get("/api/profits?id=42"))
+  // .andExpect(status().isOk()).andReturn();
+
+  // verify(profitRepository, times(1)).findById(42L);
+
+  // String responseString = response.getResponse().getContentAsString();
+  // Profit actualProfit = objectMapper.readValue(responseString, Profit.class);
+  // assertEquals(actualProfit, expectedProfit);
+  // }
+
+  // @WithMockUser(roles = { "ADMIN" })
+  // @Test
+  // public void get_profits_admin_test() throws Exception {
+  // UserCommons expectedUserCommons =
+  // UserCommons.builder().id(1).commonsId(2).userId(1).build();
+  // Profit expectedProfit =
+  // Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+  // when(profitRepository.findById(42L)).thenReturn(Optional.of(expectedProfit));
+
+  // MvcResult response = mockMvc.perform(get("/api/profits/admin?id=42"))
+  // .andExpect(status().isOk()).andReturn();
+
+  // verify(profitRepository, times(1)).findById(42L);
+
+  // String responseString = response.getResponse().getContentAsString();
+  // Profit actualProfit = objectMapper.readValue(responseString, Profit.class);
+  // assertEquals(actualProfit, expectedProfit);
+  // }
+
+  // @WithMockUser(roles = { "USER" })
+  // @Test
+  // public void get_profits_all_commons_test() throws Exception {
+  //   List<Profit> expectedProfits = new ArrayList<Profit>();
+  //   UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(1).build();
+  //   Profit p1 = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+
+  //   expectedProfits.add(p1);
+  //   when(profitRepository.findAllByUserCommonsId(1L)).thenReturn(expectedProfits);
+  //   // UserCommons is associated with current user
+  //   when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(expectedUserCommons));
+
+  //   MvcResult response = mockMvc
+  //       .perform(get("/api/profits/all/commons?userCommonsId=1"))
+  //       .andExpect(status().isOk()).andReturn();
+
+  //   verify(profitRepository, times(1)).findAllByUserCommonsId(1L);
+
+  //   String responseString = response.getResponse().getContentAsString();
+  //   List<Profit> actualProfits = objectMapper.readValue(responseString, new TypeReference<List<Profit>>() {
+  //   });
+  //   assertEquals(actualProfits, expectedProfits);
+  // }
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void get_profits_all_commons_other_user_test() throws Exception {
+    List<Profit> expectedProfits = new ArrayList<Profit>();
+    UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(2).build();
+    Profit p1 = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+
+    when(profitRepository.findAllByUserCommonsId(1L)).thenReturn(expectedProfits);
+    // UserCommons is associated with current user
+    when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(expectedUserCommons));
+
+    MvcResult response = mockMvc
+        .perform(get("/api/profits/all/commons?userCommonsId=1").contentType("application/json"))
+        .andExpect(status().isNotFound()).andReturn();
+
+    verify(profitRepository, times(0)).findAllByUserCommonsId(1L);
+    verify(userCommonsRepository, times(0)).findByCommonsIdAndUserId(2L, 2L);
+
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("EntityNotFoundException", json.get("type"));
+    assertEquals("UserCommons with userCommonsId 1 and userId 1 not found", json.get("message"));
   }
 
   @WithMockUser(roles = { "ADMIN" })
   @Test
-  public void get_profits_admin_test() throws Exception {
-    UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(1).build();
-    Profit expectedProfit = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
-    when(profitRepository.findById(42L)).thenReturn(Optional.of(expectedProfit));
-
-    MvcResult response = mockMvc.perform(get("/api/profits/admin?id=42"))
-        .andExpect(status().isOk()).andReturn();
-
-    verify(profitRepository, times(1)).findById(42L);
-
-    String responseString = response.getResponse().getContentAsString();
-    Profit actualProfit = objectMapper.readValue(responseString, Profit.class);
-    assertEquals(actualProfit, expectedProfit);
-  }
-
-  @WithMockUser(roles = { "USER" })
-  @Test
-  public void get_profits_all_commons_test() throws Exception {
+  public void get_profits_all_commons_admin_test() throws Exception {
     List<Profit> expectedProfits = new ArrayList<Profit>();
     UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(1).build();
     Profit p1 = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
@@ -105,7 +184,7 @@ public class ProfitsControllerTests extends ControllerTestCase {
     when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(expectedUserCommons));
 
     MvcResult response = mockMvc
-        .perform(get("/api/profits/all/commons?userCommonsId=1").contentType("application/json"))
+        .perform(get("/api/profits/admin/all/commons?userCommonsId=1").contentType("application/json"))
         .andExpect(status().isOk()).andReturn();
 
     verify(profitRepository, times(1)).findAllByUserCommonsId(1L);
@@ -115,5 +194,53 @@ public class ProfitsControllerTests extends ControllerTestCase {
     });
     assertEquals(actualProfits, expectedProfits);
   }
+
+  @WithMockUser(roles = { "ADMIN" })
+  @Test
+  public void get_profits_all_commons_other_user_admin_test() throws Exception {
+    List<Profit> expectedProfits = new ArrayList<Profit>();
+    UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(2).build();
+    Profit p1 = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+
+    expectedProfits.add(p1);
+    when(profitRepository.findAllByUserCommonsId(1L)).thenReturn(expectedProfits);
+    // UserCommons is associated with current user
+    when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(expectedUserCommons));
+
+    MvcResult response = mockMvc
+        .perform(get("/api/profits/admin/all/commons?userCommonsId=1"))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(profitRepository, times(1)).findAllByUserCommonsId(1L);
+
+    String responseString = response.getResponse().getContentAsString();
+    List<Profit> actualProfits = objectMapper.readValue(responseString, new TypeReference<List<Profit>>() {
+    });
+    assertEquals(actualProfits, expectedProfits);
+  }
+
+  // @WithMockUser(roles = { "USER" })
+  // @Test
+  // public void post_profits_post_test() throws Exception {
+  // UserCommons expectedUserCommons =
+  // UserCommons.builder().id(1).commonsId(2).userId(1).build();
+  // Profit expectedProfit =
+  // Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+
+  // when(profitRepository.save(expectedProfit)).thenReturn(expectedProfit);
+  // // UserCommons is associated with current user
+  // when(userCommonsRepository.findByCommonsIdAndUserId(2L,
+  // 1L)).thenReturn(Optional.of(expectedUserCommons));
+
+  // MvcResult response = mockMvc
+  // .perform(post("/api/profits/post?profit=100&timestamp=12&userCommonsId=1").with(csrf()))
+  // .andExpect(status().isOk()).andReturn();
+
+  // verify(profitRepository, times(1)).save(expectedProfit);
+
+  // String expectedJson = mapper.writeValueAsString(expectedProfit);
+  // String responseString = response.getResponse().getContentAsString();
+  // assertEquals(expectedJson, responseString);
+  // }
 
 }
