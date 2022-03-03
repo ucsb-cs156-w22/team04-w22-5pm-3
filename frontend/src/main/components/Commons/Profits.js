@@ -2,6 +2,8 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import ProfitsTable from "main/components/Commons/ProfitsTable"
 
+import userCommonsFixtures from "fixtures/userCommonsFixtures";
+
 const dummyData = [
     { id: 1, profit: 10, date: "2021-03-05" },
     { id: 2, profit: 11, date: "2021-03-06" },
@@ -11,7 +13,8 @@ const dummyData = [
 
 
 // add parameters 
-const Profits = () => {
+const Profits = ({ userCommons, profits }) => {
+
     return (
         <Card>
             <Card.Header as="h5">Profits</Card.Header>
