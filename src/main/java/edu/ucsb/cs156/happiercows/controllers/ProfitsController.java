@@ -89,6 +89,13 @@ public class ProfitsController extends ApiController {
     @GetMapping("/all/commons")
     public Iterable<Profit> allProfitsByUserCommonsId(
             @ApiParam("userCommonsId") @RequestParam Long userCommonsId) {
+        // First ensure that user has access to specified user commons
+        Long userId = getCurrentUser().getUser().getId();
+        UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(userCommonsId, userId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException(UserCommons.class, "userCommonsId", userCommonsId, "userId",
+                                userId));
+
         Iterable<Profit> profits = profitRepository.findAllByUserCommonsId(userCommonsId);
 
         return profits;
@@ -99,14 +106,6 @@ public class ProfitsController extends ApiController {
     @GetMapping("/admin/all/commons")
     public Iterable<Profit> allProfitsByUserCommonsId_admin(
             @ApiParam("userCommonsId") @RequestParam Long userCommonsId) {
-
-        // First ensure that user has access to specified user commons
-        Long userId = getCurrentUser().getUser().getId();
-        UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(userCommonsId, userId)
-                .orElseThrow(
-                        () -> new EntityNotFoundException(UserCommons.class, "userCommonsId", userCommonsId, "userId",
-                                userId));
-
         Iterable<Profit> profits = profitRepository.findAllByUserCommonsId(userCommonsId);
 
         return profits;
