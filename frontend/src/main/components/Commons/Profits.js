@@ -11,9 +11,23 @@ const dummyData = [
     { id: 4, profit: 8, date: "2021-03-08" }
 ];
 
+// Helper function that accepts a timestamp and returns date as string
+function format_date(s) {
+    function pad(n) { return n < 10 ? '0' + n : n; }
+    
+    let d = new Date(s);
+    
+    return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;
+}
 
-// add parameters 
+
 const Profits = ({ userCommons, profits }) => {
+
+    // Add "date" key to profits (derived from timestamp) to be displayed in table
+    const formatted_profits = profits && profits.map(profit => ({
+        date: format_date(profit.timestamp),
+        ...profit
+    }));
 
     return (
         <Card>
@@ -21,7 +35,7 @@ const Profits = ({ userCommons, profits }) => {
             <Card.Body>
                 {/* change 4am to admin-appointed time? And consider adding milk bottle as decoration */}
                 <Card.Title>You will earn profits from milking your cows everyday at 4am.</Card.Title>
-                <ProfitsTable profits={dummyData} />
+                {formatted_profits && <ProfitsTable profits={formatted_profits} />}
             </Card.Body>
         </Card>
     );
