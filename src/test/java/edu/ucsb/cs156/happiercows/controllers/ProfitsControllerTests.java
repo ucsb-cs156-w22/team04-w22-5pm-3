@@ -62,15 +62,30 @@ public class ProfitsControllerTests extends ControllerTestCase {
   @Test
   public void get_profits_test() throws Exception {
     UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(1).build();
-    Profit expectedProfit = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
-    when(profitRepository.save(any())).thenReturn(expectedProfit);
-    // UserCommons is associated with current user
-    when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(expectedUserCommons));
+    Profit expectedProfit = Profit.builder().id(42L).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+    when(profitRepository.findById(42L)).thenReturn(Optional.of(expectedProfit));
 
     MvcResult response = mockMvc.perform(get("/api/profits?id=42"))
         .andExpect(status().isOk()).andReturn();
 
-    verify(profitRepository, times(1)).save(expectedProfit);
+    verify(profitRepository, times(1)).findById(42L);
+
+    String responseString = response.getResponse().getContentAsString();
+    Profit actualProfit = objectMapper.readValue(responseString, Profit.class);
+    assertEquals(actualProfit, expectedProfit);
+  }
+
+  @WithMockUser(roles = { "ADMIN" })
+  @Test
+  public void get_profits_admin_test() throws Exception {
+    UserCommons expectedUserCommons = UserCommons.builder().id(1).commonsId(2).userId(1).build();
+    Profit expectedProfit = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
+    when(profitRepository.findById(42L)).thenReturn(Optional.of(expectedProfit));
+
+    MvcResult response = mockMvc.perform(get("/api/profits/admin?id=42"))
+        .andExpect(status().isOk()).andReturn();
+
+    verify(profitRepository, times(1)).findById(42L);
 
     String responseString = response.getResponse().getContentAsString();
     Profit actualProfit = objectMapper.readValue(responseString, Profit.class);
@@ -85,7 +100,7 @@ public class ProfitsControllerTests extends ControllerTestCase {
     Profit p1 = Profit.builder().id(42).profit(100).timestamp(12).userCommons(expectedUserCommons).build();
 
     expectedProfits.add(p1);
-    when(profitRepository.findAll()).thenReturn(expectedProfits);
+    when(profitRepository.findAllByUserCommonsId(1L)).thenReturn(expectedProfits);
     // UserCommons is associated with current user
     when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(expectedUserCommons));
 
@@ -93,7 +108,7 @@ public class ProfitsControllerTests extends ControllerTestCase {
         .perform(get("/api/profits/all/commons?userCommonsId=1").contentType("application/json"))
         .andExpect(status().isOk()).andReturn();
 
-    verify(profitRepository, times(1)).findAll();
+    verify(profitRepository, times(1)).findAllByUserCommonsId(1L);
 
     String responseString = response.getResponse().getContentAsString();
     List<Profit> actualProfits = objectMapper.readValue(responseString, new TypeReference<List<Profit>>() {
