@@ -26,7 +26,7 @@ export default function HomePage() {
       }
     );
 
-  const objectToAxiosParams = (newCommonsId) => ({
+  const objectToAxiosParams = () => ({
     url: "/api/commons/join",
     method: "POST",
     params: {

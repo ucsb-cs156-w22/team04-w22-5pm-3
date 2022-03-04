@@ -9,6 +9,8 @@ import ManageCows from "main/components/Commons/ManageCows";
 import FarmStats from "main/components/Commons/FarmStats";
 import Profits from "main/components/Commons/Profits";
 import { useBackend } from "main/utils/useBackend";
+import { useBackendMutation } from "main/utils/useBackend";
+import axios from "axios";
 
 export default function PlayPage() {
 
@@ -54,12 +56,29 @@ export default function PlayPage() {
       }
     );
 
+    const objectToAxiosParams = (commonsId, wealth) => ({
+      url: "/api/usercommons/GetWealth",
+      method: "POST",
+      params: {
+        commonsId: commonsId,
+        wealth: wealth
+      }
+    });
+
+    const mutation = useBackendMutation(
+      objectToAxiosParams,
+      { onSuccess: () => toast("yay!")},
+      // Stryker disable next-line all : hard to set up test for caching
+      [`/api/usercommons/GetWealth?commonsId=${commonsId}&wealth=${wealth}`]
+    );
  
   const onBuy = (userCommons) => { 
+    mutation.mutate(commonsId, -10);
     console.log("onBuy called:", userCommons); 
   };
   
   const onSell = (userCommons) => { 
+    mutation.mutate(commonsId, 10);
     console.log("onSell called:", userCommons);
   };
 

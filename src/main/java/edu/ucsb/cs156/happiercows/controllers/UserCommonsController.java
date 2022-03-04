@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
@@ -18,6 +20,8 @@ import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import javax.validation.Valid;
 
 @Api(description = "User Commons")
 @RequestMapping("/api/usercommons")
@@ -56,5 +60,22 @@ public class UserCommonsController extends ApiController {
             () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
     return userCommons;
   }
+
+  @ApiOperation(value = "Update a user commons's wealth for current user")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @PostMapping("/GetWealth")
+  public UserCommons updateWealthById(
+      @ApiParam("commonsId") @RequestParam Long commonsId, @RequestParam @Valid int wealth) throws JsonProcessingException {
+
+    User u = getCurrentUser().getUser();
+    Long userId = u.getId();
+    UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
+        .orElseThrow(
+            () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
+    userCommons.setTotalWealth(wealth);
+    return userCommons;
+
+  }
+
 
 }

@@ -24,6 +24,7 @@ function App() {
             hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/createcommons" element={<AdminCreateCommonsPage />} />
           }
           <Route path="/play/:commonsId" element={<PlayPage />} /> 
+
         </Routes>
       </BrowserRouter>
   );
