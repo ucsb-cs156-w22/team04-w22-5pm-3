@@ -89,12 +89,16 @@ public class ProfitsController extends ApiController {
     @GetMapping("/all/commons")
     public Iterable<Profit> allProfitsByUserCommonsId(
             @ApiParam("userCommonsId") @RequestParam Long userCommonsId) {
-        // First ensure that user has access to specified user commons
         Long userId = getCurrentUser().getUser().getId();
-        UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(userCommonsId, userId)
+
+        // First ensure that specified user commons exists
+        UserCommons userCommons = userCommonsRepository.findById(userCommonsId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(UserCommons.class, "userCommonsId", userCommonsId, "userId",
-                                userId));
+                        () -> new EntityNotFoundException(UserCommons.class, userCommonsId));
+
+        // Then ensure that user has access to specified user commons
+        if (userId != userCommons.getUserId())
+            throw new EntityNotFoundException(UserCommons.class, userCommonsId);
 
         Iterable<Profit> profits = profitRepository.findAllByUserCommonsId(userCommonsId);
 
@@ -120,11 +124,14 @@ public class ProfitsController extends ApiController {
             @ApiParam("userCommonsId") @RequestParam long userCommonsId) {
         Long userId = getCurrentUser().getUser().getId();
 
-        // First ensure that user has access to specified user commons
-        UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(userCommonsId, userId)
+        // First ensure that specified user commons exists
+        UserCommons userCommons = userCommonsRepository.findById(userCommonsId)
                 .orElseThrow(
-                        () -> new EntityNotFoundException(UserCommons.class, "commonsId", userCommonsId, "userId",
-                                userId));
+                        () -> new EntityNotFoundException(UserCommons.class, userCommonsId));
+
+        // Then ensure that user has access to specified user commons
+        if (userId != userCommons.getUserId())
+            throw new EntityNotFoundException(UserCommons.class, userCommonsId);
 
         Profit p = new Profit();
         p.setUserCommons(userCommons);
