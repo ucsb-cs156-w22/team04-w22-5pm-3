@@ -2,13 +2,6 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import ProfitsTable from "main/components/Commons/ProfitsTable"
 
-// const dummyData = [
-//     { id: 1, profit: 10, date: "2021-03-05" },
-//     { id: 2, profit: 11, date: "2021-03-06" },
-//     { id: 3, profit: 10, date: "2021-03-07" },
-//     { id: 4, profit: 8, date: "2021-03-08" }
-// ];
-
 // Helper function that accepts a timestamp and returns date as string
 function format_date(s) {
     function pad(n) { return n < 10 ? '0' + n : n; }
