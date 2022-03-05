@@ -3,34 +3,36 @@ import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom'
 
-export default function EditCommonsForm() {
-  // export default function EditCommonsForm(props, { initialCommons}) {
-  //const { onSubmit } = props;
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useForm(
-  //   { defaultValues: initialCommons || {}, }
-  // );
+//export default function EditCommonsForm(props) {
+export default function EditCommonsForm(props, { initialCommons }) {
+  const { onSubmit } = props;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm(
+    { defaultValues: initialCommons || {}, }
+  );
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
-  //   <Form onSubmit={handleSubmit(onSubmit)}>
-  //     <Form.Group className="mb-3">
-  //       <Form.Label htmlFor="name">Commons Name</Form.Label>
-  //       <Form.Control
-  //         id="name"
-  //         type="text"
-  //         isInvalid={!!errors.name}
-  //         {...register("name", { required: "Commons name is required" })}
-  //       />
-  //       <Form.Control.Feedback type="invalid">
-  //         {errors.name?.message}
-  //       </Form.Control.Feedback>
-  //     </Form.Group>
 
+   <Form onSubmit={handleSubmit(onSubmit)}>
+
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="name">Commons Name</Form.Label>
+        <Form.Control
+          id="name"
+          type="text"
+          isInvalid={!!errors.name}
+          {...register("name", { required: "Commons name is required" })}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.name?.message}
+        </Form.Control.Feedback>
+      </Form.Group>
+ { /*
   //     <Form.Group className="mb-3">
   //       <Form.Label htmlFor="startingBalance">Starting Balance</Form.Label>
   //       <Form.Control
@@ -102,19 +104,20 @@ export default function EditCommonsForm() {
   //         {errors.startDate?.message}
   //       </Form.Control.Feedback>
   //     </Form.Group>
+  */ }
       <Button 
       type="submit" 
-      data-testid="EditCommonsForm-Edit-Button"
+      data-testid="CommonsForm-Edit"
       >
         Edit
       </Button>
-  //     <Button
-  //       variant="Secondary"
-  //       onClick={() => navigate(-1)}
-  //       data-testid="CommonsForm-cancel"
-  //     >
-  //       Cancel
-  //     </Button>
-  //   </Form>
+      <Button
+        variant="Secondary"
+        onClick={() => navigate(-1)}
+        data-testid="CommonsForm-cancel"
+      >
+        Cancel
+      </Button>
+    </Form>
   );
 }
