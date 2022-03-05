@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom'
 
 //export default function EditCommonsForm(props) {
-export default function EditCommonsForm(props, { initialCommons }) {
-  const { onSubmit } = props;
+export default function EditCommonsForm({ initialCommons, submitAction }) {
   const {
     register,
     handleSubmit,
@@ -18,9 +17,39 @@ export default function EditCommonsForm(props, { initialCommons }) {
 
   return (
 
-   <Form onSubmit={handleSubmit(onSubmit)}>
+   <Form onSubmit={handleSubmit(submitAction)}>
 
-      <Form.Group className="mb-3">
+      {initialCommons && (
+        <Form.Group className="mb-3" >
+          <Form.Label htmlFor="id">Id</Form.Label>
+            <Form.Control
+              data-testid="CommonsForm-id"
+              id="id"
+              type="text"
+              {...register("id")}
+              value={initialCommons.id}
+              disabled
+            />
+        </Form.Group>
+      )}
+
+        <Form.Group className="mb-3" >
+          <Form.Label htmlFor="Name">Name</Form.Label>
+          <Form.Control
+            data-testid="CommonsForm-name"
+            id="name"
+            type="text"
+            isInvalid={Boolean(errors.name)}
+            {...register("name", {
+               required: "Name is required."
+            })}
+          />
+          <Form.Control.Feedback type="invalid">
+            {errors.data?.message}
+          </Form.Control.Feedback>
+        </Form.Group>
+
+      {/* <Form.Group className="mb-3">
         <Form.Label htmlFor="name">Commons Name</Form.Label>
         <Form.Control
           id="name"
@@ -31,7 +60,7 @@ export default function EditCommonsForm(props, { initialCommons }) {
         <Form.Control.Feedback type="invalid">
           {errors.name?.message}
         </Form.Control.Feedback>
-      </Form.Group>
+      </Form.Group> */}
  { /*
   //     <Form.Group className="mb-3">
   //       <Form.Label htmlFor="startingBalance">Starting Balance</Form.Label>
