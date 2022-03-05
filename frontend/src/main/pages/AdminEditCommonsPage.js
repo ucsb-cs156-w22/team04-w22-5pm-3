@@ -12,37 +12,37 @@ import AxiosMockAdapter from "axios-mock-adapter";
 
 const AdminEditCommonsPage = () => {
 
-    const objectToAxiosParams = (newCommons) => ({
-        url: "/api/commons/new",
-        method: "POST",
-        data: newCommons
-    });
+    // const objectToAxiosParams = (newCommons) => ({
+    //     url: "/api/commons/edit",
+    //     method: "POST",
+    //     data: newCommons
+    // });
 
-    const onSuccess = (commons) => {
-        toast(`Commons successfully edited! - id: ${commons.id} name: ${commons.name}`);
-    }
+    // const onSuccess = (commons) => {
+    //     toast(`Commons successfully edited! - id: ${commons.id} name: ${commons.name}`);
+    // }
 
-    const mutation = useBackendMutation(
-        objectToAxiosParams,
-        { onSuccess },
-        // Stryker disable next-line all : hard to set up test for caching
-        ["/api/commons/all"]
-    );
+    // const mutation = useBackendMutation(
+    //     objectToAxiosParams,
+    //     { onSuccess },
+    //     // Stryker disable next-line all : hard to set up test for caching
+    //     ["/api/commons/all"]
+    // );
 
-    const onSubmit = async (data) => {
-        mutation.mutate(data);
-    }
+    // const onSubmit = async (data) => {
+    //     mutation.mutate(data);
+    // }
 
 
-    if (mutation.isSuccess) {
-        return <Navigate to="/" />
-    }
+    // if (mutation.isSuccess) {
+    //     return <Navigate to="/" />
+    // }
 
     return (
         <BasicLayout>
             <h2>Edit Commons</h2>
             <EditCommonsForm
-                onSubmit={onSubmit}
+                // onSubmit={onSubmit}
             />
         </BasicLayout>
     );
