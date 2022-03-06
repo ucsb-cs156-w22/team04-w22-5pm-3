@@ -38,13 +38,13 @@ const AdminEditCommonsPage = () => {
         }
     });
 
-    const onSuccess = (commons) => {
-        toast(`Commons Updated - id: ${commons.id} data1: ${commons.data1}`);
-    }
+    // const onSuccess = (commons) => {
+    //     toast(`Commons Updated - id: ${commons.id} data1: ${commons.data1}`);
+    // }
 
     const mutation = useBackendMutation(
         objectToAxiosPutParams,
-        { onSuccess },
+        //{ onSuccess },
         // Stryker disable next-line all : hard to set up test for caching
         [`/api/commons?id=${id}`]
     );

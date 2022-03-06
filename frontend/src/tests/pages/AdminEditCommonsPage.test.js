@@ -29,6 +29,18 @@ describe("when the backend doesn't return a todo", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-        await waitFor(() => expect(getByText("Edit Commons")).toBeInTheDocument());
+        await waitFor(() => expect(getByText("Name")).toBeInTheDocument());
+
+    });
+    test("Changes when you click Update", async () => {
+        const { getByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <AdminEditCommonsPage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+
+        await waitFor(() => expect(getByTestId("CommonsForm-id")).toBeInTheDocument());
     });
 });

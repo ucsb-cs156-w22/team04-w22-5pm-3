@@ -19,7 +19,9 @@ describe("EditCommonsForm tests", () => {
                 <EditCommonsForm />
             </Router>
         );
-        await waitFor(() => expect(getByText(/Commons Name/)).toBeInTheDocument());
+        // await waitFor(() => expect(getByText(/Commons Name/)).toBeInTheDocument());
+        await waitFor(() => expect(getByText(/Name/)).toBeInTheDocument());
+        
     });
     test("Test that navigate(-1) is called when Cancel is clicked", async () => {
 
