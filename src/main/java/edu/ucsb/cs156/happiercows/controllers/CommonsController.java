@@ -28,6 +28,7 @@ import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -70,10 +71,18 @@ public class CommonsController extends ApiController {
   @ApiOperation(value = "Create a new commons")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping(value = "/new", produces = "application/json")
-  public ResponseEntity<String> createCommons(@ApiParam("name of commons") @RequestBody CreateCommonsParams params)
+  public ResponseEntity<String> createCommons(@ApiParam("request body") @RequestBody CreateCommonsParams params)
       throws JsonProcessingException {
     log.info("name={}", params.getName());
-    Commons c = Commons.builder().name(params.getName()).build();
+
+    Commons c = Commons.builder()
+      .name(params.getName())
+      .cowPrice(params.getCowPrice())
+      .milkPrice(params.getMilkPrice())
+      .startingBalance(params.getStartingBalance())
+      .startingDate(params.getStartingDate())
+      .build();
+      
     Commons savedCommons = commonsRepository.save(c);
     String body = mapper.writeValueAsString(savedCommons);
     log.info("body={}", body);

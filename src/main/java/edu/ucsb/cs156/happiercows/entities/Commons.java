@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.AccessLevel;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
@@ -22,6 +25,10 @@ public class Commons {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;  
   private String name;
+  private double cowPrice;
+  private double milkPrice;
+  private double startingBalance;
+  private LocalDateTime startingDate;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
   @JoinTable(name = "user_commons", 
