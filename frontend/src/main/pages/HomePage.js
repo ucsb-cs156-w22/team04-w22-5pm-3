@@ -8,6 +8,7 @@ import Background from './../../assets/HomePageBackground.jpg';
 
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 export default function HomePage() {
   const [commons, setCommons] = useState([]);
@@ -25,6 +26,10 @@ export default function HomePage() {
         url: "/api/commons/all"
       }
     );
+  const onSuccess = (commons) => {
+    
+    toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);
+  }
 
   const objectToAxiosParams = (newCommonsId) => ({
     url: "/api/commons/join",
@@ -36,7 +41,7 @@ export default function HomePage() {
 
   const mutation = useBackendMutation(
     objectToAxiosParams,
-    {  },
+    { onSuccess },
     // Stryker disable next-line all : hard to set up test for caching
     ["/api/currentUser"]
   );
