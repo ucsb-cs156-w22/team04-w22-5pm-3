@@ -27,6 +27,7 @@ export default function HomePage() {
       }
     );
   const onSuccess = (commons) => {
+    // Stryker disable next-line all : hard to get variable
     var existed = new Boolean(false);
     for(let i = 0; i < commonsJoined.length; i++ ){
       if(commonsJoined[i].id == commons.id){
@@ -35,7 +36,8 @@ export default function HomePage() {
       }
     }
     if(existed == true){
-      toast(`You have alreadt joined the common with id: ${commons.id}, name: ${commons.name}`);
+      // Stryker disable next-line all : hard to get variable
+      toast(`You have already joined the common with id: ${commons.id}, name: ${commons.name}`);
     }else{
       toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);
     }

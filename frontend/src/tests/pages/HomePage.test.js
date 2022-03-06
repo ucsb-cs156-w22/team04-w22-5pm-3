@@ -10,6 +10,16 @@ import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 
 
+const mockToast = jest.fn();
+jest.mock('react-toastify', () => {
+    const originalModule = jest.requireActual('react-toastify');
+    return {
+        __esModule: true,
+        ...originalModule,
+        toast: (x) => mockToast(x)
+    };
+});
+
 describe("HomePage tests", () => {
     const queryClient = new QueryClient();
     const axiosMock = new AxiosMockAdapter(axios);
@@ -72,7 +82,7 @@ describe("HomePage tests", () => {
         fireEvent.click(visitButton);
     });
 
-    test("Calls the callback when you click join", async () => {
+    test("Calls the callback when you click join to a unjoined commom", async () => {
         apiCurrentUserFixtures.userOnly.user.commons = commonsFixtures.oneCommons;
         axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
         axiosMock.onGet("/api/commons/all").reply(200, commonsFixtures.threeCommons);
@@ -89,6 +99,29 @@ describe("HomePage tests", () => {
         await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
         const joinButton = getByTestId("commonsCard-button-Join-1");
         fireEvent.click(joinButton);
+        await waitFor(() => expect(mockToast).toBeCalled);
+        expect(mockToast).toBeCalledWith("Successfully joined the common with id: 5, name: Seths Common");
     });
 
+    // test("Calls the callback when you click join to a joined commom", async () => {
+    //     apiCurrentUserFixtures.userOnly.user.commons = commonsFixtures.oneCommons;
+    //     axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
+    //     axiosMock.onGet("/api/commons/all").reply(200, commonsFixtures.threeCommons);
+    //     axiosMock.onPost("/api/commons/join").reply(200, commonsFixtures.threeCommons[0]);
+
+    //     const { getByTestId } = render(
+    //         <QueryClientProvider client={queryClient}>
+    //             <MemoryRouter>
+    //                 <HomePage />
+    //             </MemoryRouter>
+    //         </QueryClientProvider>
+    //     );
+
+    //     await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
+    //     const joinButton = getByTestId("commonsCard-button-Join-1");
+        
+    //     fireEvent.click(joinButton);
+    //     await waitFor(() => expect(mockToast).toBeCalled);
+    //     expect(mockToast).toBeCalledWith("You have already joined the common with id: 5, name: Seths Common");
+    // });
 });
