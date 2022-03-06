@@ -32,7 +32,6 @@ export default function HomePage() {
     for(let i = 0; i < commonsJoined.length; i++ ){
       if(commonsJoined[i].id == commons.id){
         existed = true;
-        break;
       }
     }
     if(existed == true){

@@ -96,32 +96,33 @@ describe("HomePage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
-        const joinButton = getByTestId("commonsCard-button-Join-1");
+        await waitFor(() => expect(getByTestId("commonsCard-button-Join-5")).toBeInTheDocument());
+        const joinButton = getByTestId("commonsCard-button-Join-5");
         fireEvent.click(joinButton);
         await waitFor(() => expect(mockToast).toBeCalled);
         expect(mockToast).toBeCalledWith("Successfully joined the common with id: 5, name: Seths Common");
     });
 
-    // test("Calls the callback when you click join to a joined commom", async () => {
-    //     apiCurrentUserFixtures.userOnly.user.commons = commonsFixtures.oneCommons;
-    //     axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-    //     axiosMock.onGet("/api/commons/all").reply(200, commonsFixtures.threeCommons);
-    //     axiosMock.onPost("/api/commons/join").reply(200, commonsFixtures.threeCommons[0]);
+    test("Calls the callback when you click join to a joined commom", async () => {
+        apiCurrentUserFixtures.userOnly.user.commons = commonsFixtures.oneCommons;
+        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
+        axiosMock.onGet("/api/commons/all").reply(200, commonsFixtures.threeCommons);
+        axiosMock.onPost("/api/commons/join").reply(200, commonsFixtures.oneCommons[0]);
 
-    //     const { getByTestId } = render(
-    //         <QueryClientProvider client={queryClient}>
-    //             <MemoryRouter>
-    //                 <HomePage />
-    //             </MemoryRouter>
-    //         </QueryClientProvider>
-    //     );
-
-    //     await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
-    //     const joinButton = getByTestId("commonsCard-button-Join-1");
+        const { getByTestId } = render(
+            <QueryClientProvider client={queryClient}>
+                <MemoryRouter>
+                    <HomePage />
+                </MemoryRouter>
+            </QueryClientProvider>
+        );
+        // const user1 = getByTestId("commonsCard-id")
+        // fireEvent.change(user1, { target: { value: 5 } })
+        await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
+        const joinButton = getByTestId("commonsCard-button-Join-1");
         
-    //     fireEvent.click(joinButton);
-    //     await waitFor(() => expect(mockToast).toBeCalled);
-    //     expect(mockToast).toBeCalledWith("You have already joined the common with id: 5, name: Seths Common");
-    // });
+        fireEvent.click(joinButton);
+        await waitFor(() => expect(mockToast).toBeCalled);
+        expect(mockToast).toBeCalledWith("You have already joined the common with id: 1, name: Anika's Commons");
+    });
 });
