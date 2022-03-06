@@ -27,8 +27,18 @@ export default function HomePage() {
       }
     );
   const onSuccess = (commons) => {
-    
-    toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);
+    var existed = new Boolean(false);
+    for(let i = 0; i < commonsJoined.length; i++ ){
+      if(commonsJoined[i].id == commons.id){
+        existed = true;
+        break;
+      }
+    }
+    if(existed == true){
+      toast(`You have alreadt joined the common with id: ${commons.id}, name: ${commons.name}`);
+    }else{
+      toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);
+    }
   }
 
   const objectToAxiosParams = (newCommonsId) => ({
