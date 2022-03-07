@@ -10,6 +10,7 @@ const FarmStats = ({userCommons}) => {
         <Card.Body>
             {/* update total wealth and cow health with data from fixture */}
             <Card.Text>
+                {/* test */}
                 <img src="Cash.png" alt="Cash" width="250" height="250"></img> 
             </Card.Text>
             <Card.Text>
