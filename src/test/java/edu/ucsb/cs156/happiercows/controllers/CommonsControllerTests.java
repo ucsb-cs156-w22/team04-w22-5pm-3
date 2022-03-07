@@ -218,17 +218,17 @@ public class CommonsControllerTests extends ControllerTestCase {
 
   // act
   MvcResult response = mockMvc.perform(
-                  put("/api/commons?id=67")
-                                  .contentType(MediaType.APPLICATION_JSON)
-                                  .characterEncoding("utf-8")
-                                  .content(requestBody)
-                                  .with(csrf()))
-                  .andExpect(status().isBadRequest()).andReturn();
+    put("/api/commons?id=67")
+      .contentType(MediaType.APPLICATION_JSON)
+      .characterEncoding("utf-8")
+      .content(requestBody)
+      .with(csrf()))
+    .andExpect(status().isNotFound()).andReturn();
 
   // assert
   verify(commonsRepository, times(1)).findById(67L);
   String responseString = response.getResponse().getContentAsString();
-  assertEquals("Commons with id 67 not found", responseString);
+  assertEquals("{\"message\":\"Commons with id 67 not found\",\"type\":\"EntityNotFoundException\"}", responseString);
 }
 
 }

@@ -129,38 +129,19 @@ public class CommonsController extends ApiController {
   public ResponseEntity<String> updateCommon(
       @ApiParam("id") @RequestParam Long id,
       @ApiParam("replacement common paramters") @RequestBody EditCommonsParams params) throws JsonProcessingException {
-    CommonsOrError uoe = new CommonsOrError(id);
 
-    uoe = doesCommonsExist(uoe);
-    if (uoe.error != null) {
-        return uoe.error;
-    }
+    Commons oldCommons = commonsRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(Commons.class,id));
 
-    Commons oldCommon = uoe.commons;
-    oldCommon.setName(params.getName());
-    oldCommon.setCowPrice(params.getCowPrice());
-    oldCommon.setMilkPrice(params.getMilkPrice());
-    oldCommon.setStartingBalance(params.getStartingBalance());
+    oldCommons.setName(params.getName());
+    oldCommons.setCowPrice(params.getCowPrice());
+    oldCommons.setMilkPrice(params.getMilkPrice());
+    oldCommons.setStartingBalance(params.getStartingBalance());
   
-    commonsRepository.save(oldCommon);
+    commonsRepository.save(oldCommons);
 
-    String body = mapper.writeValueAsString(oldCommon);
+    String body = mapper.writeValueAsString(oldCommons);
     return ResponseEntity.ok().body(body);
   }
 
-
-
-  public CommonsOrError doesCommonsExist(CommonsOrError uoe) {
-
-        Optional<Commons> optionalCommons = commonsRepository.findById(uoe.id);
-
-        if (optionalCommons.isEmpty()) {
-            uoe.error = ResponseEntity
-                    .badRequest()
-                    .body(String.format("Commons with id %d not found", uoe.id));
-        } else {
-            uoe.commons = optionalCommons.get();
-        }
-        return uoe;
-    }
 }
