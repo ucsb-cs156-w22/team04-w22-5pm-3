@@ -10,7 +10,7 @@ const FarmStats = ({userCommons}) => {
         <Card.Body>
             {/* update total wealth and cow health with data from fixture */}
             <Card.Text>
-                <img src="../../../assets/Cash.png" width="250" height="250"></img> 
+                <img src="Cash.png" width="250" height="250"></img> 
             </Card.Text>
             <Card.Text>
                 Total Wealth: ${userCommons?.totalWealth}
