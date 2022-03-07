@@ -7,6 +7,7 @@ import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.entities.Commons;
 import edu.ucsb.cs156.happiercows.entities.User;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
+import edu.ucsb.cs156.happiercows.models.CreateCommonsParams;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -32,8 +33,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @WebMvcTest(controllers = CommonsController.class)
 public class CommonsControllerTests extends ControllerTestCase {
@@ -53,21 +57,42 @@ public class CommonsControllerTests extends ControllerTestCase {
   @WithMockUser(roles = { "ADMIN" })
   @Test
   public void createCommonsTest() throws Exception {
-    Commons expectedCommons = Commons.builder().name("TestCommons").build();
-    ObjectMapper mapper = new ObjectMapper();
-    String requestBody = mapper.writeValueAsString(expectedCommons);
-    when(commonsRepository.save(any())).thenReturn(expectedCommons);
+    LocalDateTime ldt = LocalDateTime.parse("2018-01-01T08:30:00");
+
+    Commons expectedCommons = Commons.builder()
+      .name("Test Commons")
+      .cowPrice(100.10)
+      .milkPrice(20.20)
+      .startingBalance(1000.10)
+      .startingDate(ldt)
+      .build();
+
+    CreateCommonsParams params = CreateCommonsParams.builder()
+      .name("Test Commons")
+      .cowPrice(100.10)
+      .milkPrice(20.20)
+      .startingBalance(1000.10)
+      .startingDate(ldt)
+      .build();
+
+    String requestBody = objectMapper.writeValueAsString(params);
+    String expectedResponse = objectMapper.writeValueAsString(expectedCommons);
+
+    when(commonsRepository.save(expectedCommons))
+      .thenReturn(expectedCommons);
 
     MvcResult response = mockMvc
-        .perform(post("/api/commons/new?name=TestCommons").with(csrf()).contentType(MediaType.APPLICATION_JSON)
-            .characterEncoding("utf-8").content(requestBody))
-        .andExpect(status().isOk()).andReturn();
+      .perform(post("/api/commons/new").with(csrf())
+      .contentType(MediaType.APPLICATION_JSON)
+      .characterEncoding("utf-8")
+      .content(requestBody))
+      .andExpect(status().isOk())
+      .andReturn();
 
     verify(commonsRepository, times(1)).save(expectedCommons);
 
-    String responseString = response.getResponse().getContentAsString();
-    Commons actualCommons = objectMapper.readValue(responseString, Commons.class);
-    assertEquals(actualCommons, expectedCommons);
+    String actualResponse = response.getResponse().getContentAsString();
+    assertEquals(expectedResponse, actualResponse);
   }
 
   @WithMockUser(roles = { "USER" })
@@ -93,9 +118,15 @@ public class CommonsControllerTests extends ControllerTestCase {
   @Test
   public void joinCommonsTest() throws Exception {
 
+    LocalDateTime ldt = LocalDateTime.parse("2018-12-01T08:30:00");
+
     Commons c = Commons.builder()
       .id(2L)
       .name("Example Commons")
+      .cowPrice(100.10)
+      .milkPrice(10.20)
+      .startingBalance(500.00)
+      .startingDate(ldt)
       .build();
 
     UserCommons uc = UserCommons.builder()
