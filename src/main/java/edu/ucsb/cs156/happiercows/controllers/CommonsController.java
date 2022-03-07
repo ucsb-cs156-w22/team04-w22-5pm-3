@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.happiercows.controllers;
 import java.util.Optional;
 import java.time.LocalDateTime;
+import javax.validation.Valid;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import edu.ucsb.cs156.happiercows.entities.Commons;
 import edu.ucsb.cs156.happiercows.repositories.CommonsRepository;
 import edu.ucsb.cs156.happiercows.models.CreateCommonsParams;
+import edu.ucsb.cs156.happiercows.models.EditCommonsParams;
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.entities.User;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
@@ -31,6 +34,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/commons")
 @RestController
 public class CommonsController extends ApiController {
+
+  private static class CommonsOrError {
+    Long id;
+    Commons commons;
+    ResponseEntity<String> error;
+
+    public CommonsOrError(Long id) {
+        this.id = id;
+    }
+}
+
   @Autowired
   private CommonsRepository commonsRepository;
   @Autowired
@@ -108,4 +122,45 @@ public class CommonsController extends ApiController {
     userCommonsRepository.deleteById(userCommons.getId());
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
+
+  @ApiOperation("Edit a common")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping("")
+  public ResponseEntity<String> updateCommon(
+      @ApiParam("id") @RequestParam Long id,
+      @ApiParam("replacement common paramters") @RequestBody EditCommonsParams params) throws JsonProcessingException {
+    CommonsOrError uoe = new CommonsOrError(id);
+
+    uoe = doesCommonsExist(uoe);
+    if (uoe.error != null) {
+        return uoe.error;
+    }
+
+    Commons oldCommon = uoe.commons;
+    oldCommon.setName(params.getName());
+    oldCommon.setCowPrice(params.getCowPrice());
+    oldCommon.setMilkPrice(params.getMilkPrice());
+    oldCommon.setStartingBalance(params.getStartingBalance());
+  
+    commonsRepository.save(oldCommon);
+
+    String body = mapper.writeValueAsString(oldCommon);
+    return ResponseEntity.ok().body(body);
+  }
+
+
+
+  public CommonsOrError doesCommonsExist(CommonsOrError uoe) {
+
+        Optional<Commons> optionalCommons = commonsRepository.findById(uoe.id);
+
+        if (optionalCommons.isEmpty()) {
+            uoe.error = ResponseEntity
+                    .badRequest()
+                    .body(String.format("Commons with id %d not found", uoe.id));
+        } else {
+            uoe.commons = optionalCommons.get();
+        }
+        return uoe;
+    }
 }
