@@ -7,6 +7,9 @@ const commonsFixtures = {
             "endDate": "6/11/2021",
             "totalPlayers": 50,
             "cowPrice": 15,
+            "milkPrice": 4,
+            "startingBalance": 200,
+            "startDate": "6/15/2021",
         },
         {
             "id": 4,
@@ -15,6 +18,9 @@ const commonsFixtures = {
             "endDate": "6/11/2021",
             "totalPlayers": 50,
             "cowPrice": 15,
+            "milkPrice": 4,
+            "startingBalance": 200,
+            "startDate": "6/14/2021",
         },
         {
             "id": 1,
@@ -23,7 +29,18 @@ const commonsFixtures = {
             "endDate": "6/11/2021",
             "totalPlayers": 50,
             "cowPrice": 15,
+            "milkPrice": 4,
+            "startingBalance": 200,
+            "startDate": "6/11/2021",
         }
+        //{
+        // "id": 1,
+        // "name": "Anika's Commons",
+        // "startDate": 5,
+        // "endDate": "6/11/2021",
+        // "cowPrice": 50,
+        // "milkPrice": 15,
+        //}
     ],
     oneCommons:
         [
@@ -34,6 +51,9 @@ const commonsFixtures = {
                 "endDate": "6/11/2021",
                 "totalPlayers": 50,
                 "cowPrice": 15,
+                "milkPrice": 4,
+                "startingBalance": 200,
+                "startDate": "6/11/2021",
             }
         ]
 }
