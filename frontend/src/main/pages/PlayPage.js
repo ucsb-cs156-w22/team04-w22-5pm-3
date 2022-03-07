@@ -58,10 +58,9 @@ export default function PlayPage() {
           { !!currentUser &&  <CommonsPlay currentUser={currentUser} /> }
           { !!commons && <CommonsOverview commons={commons} />}
           <br />
-          { !!userCommons && <FarmStats userCommons={userCommons} /> }
-          <br />
           { !!userCommons &&
             <CardGroup >
+              <FarmStats userCommons={userCommons} />
               <ManageCows userCommons={userCommons} onBuy={onBuy} onSell={onSell} />
               <Profits userCommons={userCommons} />
             </CardGroup>
