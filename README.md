@@ -1,5 +1,7 @@
 # HappyCows/HappierCows
 
+[![codecov](https://codecov.io/gh/ucsb-cs156-w22/team04-w22-5pm-HappyCows/branch/main/graph/badge.svg?token=gPt8UBGSD9)](https://codecov.io/gh/ucsb-cs156-w22/team04-w22-5pm-HappyCows)
+
 # Storybook
 
 * [Production](https://ucsb-cs156-w22.github.io/team04-w22-5pm-HappyCows-docs/)
