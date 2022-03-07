@@ -114,6 +114,48 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals(actualCommons, expectedCommons);
   }
 
+  @WithMockUser(roles = { "ADMIN" })
+  @Test
+  public void deleteCommonsThatExistsTest() throws Exception {
+    LocalDateTime ldt = LocalDateTime.parse("2018-01-01T08:30:00");
+    
+    Commons Commons1 = Commons.builder()
+      .name("Test Commons")
+      .cowPrice(100.10)
+      .milkPrice(20.20)
+      .startingBalance(1000.10)
+      .startingDate(ldt)
+      .id(1L)
+      .build();
+
+    when(commonsRepository.findById(eq(1L))).thenReturn(Optional.of(Commons1));
+
+    MvcResult response = mockMvc.perform(
+            delete("/api/commons/delete?id=1")
+                    .with(csrf()))
+            .andExpect(status().isOk()).andReturn();
+
+    verify(commonsRepository, times(1)).findById(1L);
+        verify(commonsRepository, times(1)).deleteById(1L);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals("record 1 deleted", responseString);
+  }
+
+  @WithMockUser(roles = { "ADMIN" })
+  @Test
+  public void deleteCommonsThatDoesNotExistTest() throws Exception {
+    when(commonsRepository.findById(eq(1L))).thenReturn(Optional.empty());
+
+    MvcResult response = mockMvc.perform(
+      delete("/api/commons/delete?id=1")
+        .with(csrf()))
+      .andExpect(status().isNotFound()).andReturn();
+
+    verify(commonsRepository, times(1)).findById(1L);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals("{\"type\":\"EntityNotFoundException\",\"message\":\"Commons with id 1 not found\"}", responseString);
+  }
+
   @WithMockUser(roles = { "USER" })
   @Test
   public void joinCommonsTest() throws Exception {
