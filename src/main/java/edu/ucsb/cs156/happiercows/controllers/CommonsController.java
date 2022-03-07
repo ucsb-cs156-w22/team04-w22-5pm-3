@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import edu.ucsb.cs156.happiercows.entities.Commons;
 import edu.ucsb.cs156.happiercows.repositories.CommonsRepository;
 import edu.ucsb.cs156.happiercows.models.CreateCommonsParams;
+import edu.ucsb.cs156.happiercows.models.EditCommonsParams;
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
 import edu.ucsb.cs156.happiercows.entities.User;
 import edu.ucsb.cs156.happiercows.entities.UserCommons;
@@ -124,4 +126,25 @@ public class CommonsController extends ApiController {
       commonsRepository.deleteById(id);
       return ResponseEntity.ok().body(String.format("record %d deleted", id));
     }
+
+  @ApiOperation("Edit a common")
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PutMapping("")
+  public ResponseEntity<String> updateCommon(
+      @ApiParam("id") @RequestParam Long id,
+      @ApiParam("replacement common paramters") @RequestBody EditCommonsParams params) throws JsonProcessingException {
+
+    Commons oldCommons = commonsRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(Commons.class,id));
+
+    oldCommons.setName(params.getName());
+    oldCommons.setCowPrice(params.getCowPrice());
+    oldCommons.setMilkPrice(params.getMilkPrice());
+    oldCommons.setStartingBalance(params.getStartingBalance());
+
+    commonsRepository.save(oldCommons);
+
+    String body = mapper.writeValueAsString(oldCommons);
+    return ResponseEntity.ok().body(body);
+  }
 }

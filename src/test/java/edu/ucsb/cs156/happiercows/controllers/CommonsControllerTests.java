@@ -206,4 +206,74 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals(responseString, cAsJson);
   }
 
+  @WithMockUser(roles = { "ADMIN" })
+  @Test
+  public void admin_can_edit_an_existing_common() throws Exception {
+
+    Commons commonsOrig = Commons.builder()
+      .name("Commons 1")
+      .cowPrice(13579.1)
+      .milkPrice(2468.1)
+      .startingBalance(12345.1)
+      .build();
+
+    Commons commonsEdited = Commons.builder()
+      .name("Commons 2")
+      .cowPrice(97531.2)
+      .milkPrice(9642.2)
+      .startingBalance(54321.2)
+      .build();
+
+    String requestBody = mapper.writeValueAsString(commonsEdited);
+
+    when(commonsRepository.findById(eq(67L))).thenReturn(Optional.of(commonsOrig));
+
+    // act
+    MvcResult response = mockMvc.perform(
+      put("/api/commons?id=67")
+        .contentType(MediaType.APPLICATION_JSON)
+        .characterEncoding("utf-8")
+        .content(requestBody)
+        .with(csrf()))
+      .andExpect(status().isOk()).andReturn();
+
+      // assert
+      verify(commonsRepository, times(1)).findById(67L);
+      verify(commonsRepository, times(1)).save(commonsEdited); // should be saved with correct user
+      String responseString = response.getResponse().getContentAsString();
+      assertEquals(requestBody, responseString);
+  }
+
+  @WithMockUser(roles = { "ADMIN" })
+  @Test
+  public void admin_cannot_edit_common_that_does_not_exist() throws Exception {
+    // arrange
+
+    Commons commonsEdited = Commons.builder()
+      .name("Commons 2")
+      .cowPrice(97531.2)
+      .milkPrice(9642.2)
+      .startingBalance(54321.2)
+      .build();
+
+    String requestBody = mapper.writeValueAsString(commonsEdited);
+
+    when(commonsRepository.findById(eq(67L))).thenReturn(Optional.empty());
+
+    // act
+    MvcResult response = mockMvc.perform(
+      put("/api/commons?id=67")
+        .contentType(MediaType.APPLICATION_JSON)
+        .characterEncoding("utf-8")
+        .content(requestBody)
+        .with(csrf()))
+      .andExpect(status().isNotFound()).andReturn();
+
+    // assert
+
+    verify(commonsRepository, times(1)).findById(67L);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("EntityNotFoundException", json.get("type"));
+    assertEquals("Commons with id 67 not found", json.get("message"));
+  }
 }
