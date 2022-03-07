@@ -83,7 +83,7 @@ export default function CreateCommonsForm(props) {
         <Form.Control
           id="startingDate"
           type="date"
-          isInvalid={!!errors.startDate}
+          isInvalid={!!errors.startingDate}
           {...register("startingDate", {
             valueAsDate: true,
             validate: {
@@ -92,7 +92,7 @@ export default function CreateCommonsForm(props) {
           })}
         />
         <Form.Control.Feedback type="invalid">
-          {errors.startDate?.message}
+          {errors.startingDate?.message}
         </Form.Control.Feedback>
       </Form.Group>
       <Button type="submit" data-testid="CreateCommonsForm-Create-Button">Create</Button>
