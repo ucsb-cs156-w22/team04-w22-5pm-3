@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Map;
 
 import java.time.LocalDateTime;
 
@@ -152,8 +153,9 @@ public class CommonsControllerTests extends ControllerTestCase {
       .andExpect(status().isNotFound()).andReturn();
 
     verify(commonsRepository, times(1)).findById(1L);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals("{\"type\":\"EntityNotFoundException\",\"message\":\"Commons with id 1 not found\"}", responseString);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("EntityNotFoundException", json.get("type"));
+    assertEquals("Commons with id 1 not found", json.get("message"));
   }
 
   @WithMockUser(roles = { "USER" })
