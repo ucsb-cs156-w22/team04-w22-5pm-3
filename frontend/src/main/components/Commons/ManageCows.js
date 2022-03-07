@@ -7,7 +7,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
     // update cowPrice from fixture
     return (
         <Card>
-        <Card.Header as="h5">Manage Cows</Card.Header>
+        <Card.Header as="h5"><strong>Manage Cows</strong></Card.Header>
         <Card.Body>
             {/* change $10 to info from fixture */}
             <Card.Title>Market Cow Price: ${userCommons?.commons?.cowPrice}</Card.Title>
@@ -28,8 +28,8 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
                     </Col>
                 </Row>
           
-                    Note: If you increase cows, they will be automatically bought, and if you decrease, 
-                    the cows will be sold for the current cow price, time the health of that cow (as a percentage). 
+                    <strong>Note:</strong> If you increase cows, they will be automatically bought, and if you decrease, 
+                    the cows will be sold for the current cow price, time the health of that cow (as a percentage).
         
         </Card.Body>
         </Card>

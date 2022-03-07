@@ -14,7 +14,7 @@ const dummyData = [
 const Profits = () => {
     return (
         <Card>
-            <Card.Header as="h5">Profits</Card.Header>
+            <Card.Header as="h5"><strong>Profits</strong></Card.Header>
             <Card.Body>
                 {/* change 4am to admin-appointed time? And consider adding milk bottle as decoration */}
                 <Card.Title>You will earn profits from milking your cows everyday at 4am.</Card.Title>

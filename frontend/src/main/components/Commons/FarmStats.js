@@ -8,11 +8,11 @@ const FarmStats = ({userCommons}) => {
    
     return (
         <Card>
-        <Card.Header as="h5">Your Farm Stats</Card.Header>
+        <Card.Header as="h5"><strong>Your Farm Stats</strong></Card.Header>
         <Card.Body>
             {/* update total wealth and cow health with data from fixture */}
             <Card.Text>
-                <img src={Cash} alt="Cash" width="250" height="250"></img> 
+                <img src={Cash} alt="Cash" width="250" height="250"></img>
             </Card.Text>
             <Card.Text>
                 Total Wealth: ${userCommons?.totalWealth}
@@ -22,6 +22,9 @@ const FarmStats = ({userCommons}) => {
             </Card.Text>
             <Card.Text>
                 Cow Health: {userCommons?.cowHealth}%
+            </Card.Text>
+            <Card.Text>
+                <progress id="health" value={userCommons?.cowHealth} max="100"></progress>
             </Card.Text>
         </Card.Body>
         </Card>
