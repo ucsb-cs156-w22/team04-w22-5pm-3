@@ -30,5 +30,7 @@ public class UserCommons {
   
   private double cowHealth;
 
+  private long cowCount;
+
 }
 
