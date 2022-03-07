@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -226,9 +227,11 @@ public class CommonsControllerTests extends ControllerTestCase {
     .andExpect(status().isNotFound()).andReturn();
 
   // assert
+
   verify(commonsRepository, times(1)).findById(67L);
-  String responseString = response.getResponse().getContentAsString();
-  assertEquals("{\"message\":\"Commons with id 67 not found\",\"type\":\"EntityNotFoundException\"}", responseString);
+  Map<String, Object> json = responseToJson(response);
+  assertEquals("EntityNotFoundException", json.get("type"));
+  assertEquals("Commons with id 67 not found", json.get("message"));
 }
 
 }
