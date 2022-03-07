@@ -79,12 +79,12 @@ export default function CreateCommonsForm(props) {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="startDate">Start Date</Form.Label>
+        <Form.Label htmlFor="startingDate">Start Date</Form.Label>
         <Form.Control
-          id="startDate"
+          id="startingDate"
           type="date"
           isInvalid={!!errors.startDate}
-          {...register("startDate", {
+          {...register("startingDate", {
             valueAsDate: true,
             validate: {
               isPresent: (v) => !isNaN(v) || "Start date is required",

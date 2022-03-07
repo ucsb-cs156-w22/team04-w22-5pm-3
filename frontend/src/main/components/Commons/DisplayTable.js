@@ -47,7 +47,7 @@ export default function DisplayTable({ commons }) {
         },
         {
             Header: "Start Date",
-            accessor: "startDate",
+            accessor: "startingDate",
         },
         // {
         //     Header: "End Date",
