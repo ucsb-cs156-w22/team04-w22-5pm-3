@@ -27,12 +27,8 @@ public class UserCommons {
   private long userId;  
 
   private int totalWealth;
-<<<<<<< HEAD
-  private double averageHealth;
-=======
   
   private double cowHealth;
->>>>>>> ce944c8d4720e09b3a7d3aec66a63ce7f892eb93
 
 }
 
