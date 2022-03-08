@@ -57,7 +57,7 @@ describe("utils/useBackend tests", () => {
             expect(result.current.data).toEqual(["initialData"]);
             await waitFor(() => expect(console.error).toHaveBeenCalled());
             const errorMessage = console.error.mock.calls[0][0];
-            // expect(errorMessage).toMatch("Error communicating with backend via GET on /api/admin/users");
+            expect(errorMessage).toMatch("Error communicating with backend via GET on /api/admin/users");
             restoreConsole();
 
         });
