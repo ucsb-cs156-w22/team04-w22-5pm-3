@@ -49,11 +49,7 @@ export default function DisplayTable({ commons }) {
         {
             Header: "Start Date",
             accessor: "startingDate",
-        },
-        // {
-        //     Header: "End Date",
-        //     accessor: "endDate",
-        // }
+        }
     ];
 
     columns.push(ButtonColumn("Delete", "danger", deleteCallback, "DisplayTable")); //3rd param deleteCallback

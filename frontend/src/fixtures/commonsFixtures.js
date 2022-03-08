@@ -33,14 +33,6 @@ const commonsFixtures = {
             "startingBalance": 200,
             "startingDate": "6/11/2021",
         }
-        //{
-        // "id": 1,
-        // "name": "Anika's Commons",
-        // "startingDate": 5,
-        // "endDate": "6/11/2021",
-        // "cowPrice": 50,
-        // "milkPrice": 15,
-        //}
     ],
     oneCommons:
         [

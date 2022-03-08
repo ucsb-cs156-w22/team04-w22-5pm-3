@@ -90,8 +90,7 @@ describe("HomePage tests", () => {
         await waitFor(() => expect(getByTestId("commonsCard-button-Visit-1")).toBeInTheDocument());
         const visitButton = getByTestId("commonsCard-button-Visit-1");
         fireEvent.click(visitButton);
-        // await waitFor(() => expect(mockNavigate).toBeCalled);
-        // expect(mockNavigate).toBeCalledWith({ "to": "/play/1" });
+        
     });
 
     test("Calls the callback when you click join to a unjoined commom", async () => {
@@ -128,8 +127,7 @@ describe("HomePage tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-        // const user1 = getByTestId("commonsCard-id")
-        // fireEvent.change(user1, { target: { value: 5 } })
+        
         await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
         const joinButton = getByTestId("commonsCard-button-Join-1");
         
