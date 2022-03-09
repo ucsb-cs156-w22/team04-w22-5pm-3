@@ -65,7 +65,7 @@ describe("when the backend doesn't return a todo", () => {
             axiosMock.resetHistory();
             axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
             axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-            axiosMock.onGet("/api/commons", { params: { commonsId: 1 } }).reply(200, {
+            axiosMock.onGet("/api/commons", { params: { id: 1 } }).reply(200, {
                 id: 1,
                 name: '1',
                 startingDate: "6/10/2021",
