@@ -1,6 +1,13 @@
 # HappyCows/HappierCows
 
-[![codecov](https://codecov.io/gh/ucsb-cs156-w22/HappierCows/branch/main/graph/badge.svg?token=cu7LTPXZh1)](https://codecov.io/gh/ucsb-cs156-w22/HappierCows)
+[![codecov](https://codecov.io/gh/ucsb-cs156-w22/team04-w22-5pm-HappyCows/branch/main/graph/badge.svg?token=gPt8UBGSD9)](https://codecov.io/gh/ucsb-cs156-w22/team04-w22-5pm-HappyCows)
+
+# Storybook
+
+* [Production](https://ucsb-cs156-w22.github.io/team04-w22-5pm-HappyCows-docs/)
+* [QA](https://ucsb-cs156-w22.github.io/team04-w22-5pm-HappyCows-docs-qa/)
+
+# Description
 
 
 This is a full rewrite of the application HappyCows, a project sponsored by [Mattanjah de Vries, Distingished Professor of Chemistry at UC Santa Barbara](https://www.chem.ucsb.edu/people/mattanjah-s-de-vries).

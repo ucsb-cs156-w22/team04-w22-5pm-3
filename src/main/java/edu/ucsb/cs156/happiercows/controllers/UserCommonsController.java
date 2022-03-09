@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.ucsb.cs156.happiercows.repositories.UserCommonsRepository;
@@ -19,6 +21,8 @@ import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import javax.validation.Valid;
 
 @Api(description = "User Commons")
 @RequestMapping("/api/usercommons")
@@ -58,22 +62,41 @@ public class UserCommonsController extends ApiController {
     return userCommons;
   }
 
-  @ApiOperation(value = "Update Cow Health when buy (if this belongs to the user)")
+  @ApiOperation(value = "Update user commons when cow is bought")
   @PreAuthorize("hasRole('ROLE_USER')")
-  @PutMapping("")
-  public UserCommons putCowHealthById(
-      @ApiParam("commonsId") @RequestParam Long commonsId
-  ) throws JsonProcessingException {
+  @PutMapping("/buy")
+  public UserCommons updateWhenBuy(
+      @ApiParam("commonsId") @RequestParam Long commonsId) throws JsonProcessingException {
+
     User u = getCurrentUser().getUser();
     Long userId = u.getId();
     UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
         .orElseThrow(
-          () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
-    long cowCount = userCommons.getCowCount();
-    double cowHealth = userCommons.getCowHealth();
-    userCommons.setCowHealth( (cowCount*cowHealth+1)/ (cowCount+1) );
+            () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
+    
+    userCommons.setCowHealth( (userCommons.getNumCows()*userCommons.getCowHealth()+1)/ (userCommons.getNumCows()+1) );
+    userCommons.setNumCows(userCommons.getNumCows() + 1);
+    userCommons.setTotalWealth(userCommons.getTotalWealth() - userCommons.getCowPrice());
     userCommonsRepository.save(userCommons);
     return userCommons;
   }
+
+
+  @ApiOperation(value = "Update user commons when cow is sold")
+  @PreAuthorize("hasRole('ROLE_USER')")
+  @PutMapping("/sell")
+  public UserCommons updateWhenSell(
+      @ApiParam("commonsId") @RequestParam Long commonsId) throws JsonProcessingException {
+
+    User u = getCurrentUser().getUser();
+    Long userId = u.getId();
+    UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
+        .orElseThrow(
+            () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
+    
+    userCommonsRepository.save(userCommons);
+    return userCommons;
+  }
+
 
 }
