@@ -73,7 +73,7 @@ public class UserCommonsController extends ApiController {
     UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
         .orElseThrow(
             () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
-    
+    userCommons.setCowHealth((userCommons.getNumCows() * userCommons.getCowHealth() + 1) / (userCommons.getNumCows() + 1)); // need to set precision on frontend!
     userCommons.setNumCows(userCommons.getNumCows() + 1);
     userCommons.setTotalWealth(userCommons.getTotalWealth() - userCommons.getCowPrice());
     userCommonsRepository.save(userCommons);
