@@ -63,8 +63,6 @@ public class UserCommonsController extends ApiController {
   @PutMapping("")
   public UserCommons putCowHealthById(
       @ApiParam("commonsId") @RequestParam Long commonsId
-      // @ApiParam("Cow Health") @RequestParam double cowHealth,
-      // @ApiParam("Cow Count") @RequestParam long cowCount
   ) throws JsonProcessingException {
     User u = getCurrentUser().getUser();
     Long userId = u.getId();
