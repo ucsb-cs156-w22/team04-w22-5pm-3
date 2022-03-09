@@ -22,4 +22,13 @@ body {
   progress::-webkit-progress-value {
     background: rgb(184, 50, 50);
   }
+
+  h5 {
+    font-weight: bolder;
+  }
+
+  .icon {
+    width: auto;
+    height: auto;
+  }
   

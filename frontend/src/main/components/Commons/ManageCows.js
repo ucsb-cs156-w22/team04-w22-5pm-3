@@ -7,7 +7,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
     // update cowPrice from fixture
     return (
         <Card>
-        <Card.Header as="h5"><strong>Manage Cows</strong></Card.Header>
+        <Card.Header as="h5">Manage Cows</Card.Header>
         <Card.Body>
             {/* change $10 to info from fixture */}
             <Card.Title>Market Cow Price: ${userCommons?.commons?.cowPrice}</Card.Title>
@@ -15,7 +15,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
                 <Row>
                     <Col>
                         <Card.Text>
-                            <img src={cowHead} alt="cowHead" width="250" height="250"></img>
+                            <img class="icon" src={cowHead}></img>
                         </Card.Text>
                     </Col>
                     <Col>
