@@ -8,11 +8,11 @@ export default function DisplayTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
 
     // Edit:
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    // const editCallback = (cell) => {
-    //     navigate(`/collegesubreddits/edit/${cell.row.values.id}`)
-    // }
+    const editCallback = (cell) => {
+        navigate(`/admin/editcommons/${cell.row.values.id}`)
+    }
 
     // Delete: 
     const deleteMutation = useBackendMutation(
@@ -53,6 +53,7 @@ export default function DisplayTable({ commons }) {
     ];
 
     columns.push(ButtonColumn("Delete", "danger", deleteCallback, "DisplayTable")); //3rd param deleteCallback
+    columns.push(ButtonColumn("Edit", "primary", editCallback, "DisplayTable"));
     // Stryker disable next-line ArrayDeclaration : [] is a performance optimization
     const memoizedColumns = React.useMemo(() => columns, []);
     const memoizedDates = React.useMemo(() => commons, [commons]);
