@@ -1,6 +1,7 @@
+import React from "react";
 import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import { useParams } from "react-router-dom";
-import CreateCommonsForm from "main/components/Commons/CreateCommonsForm";
+import EditCommonsForm from "main/components/Commons/EditCommonsForm";
 import { Navigate } from 'react-router-dom'
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { toast } from "react-toastify";
@@ -33,7 +34,6 @@ export default function EditCommonsPage() {
         cowPrice : common.cowPrice,
         milkPrice : common.milkPrice,
         startingBalance : common.startingBalance,
-        startingDate : common.startingDate
     }
   });
 
@@ -45,12 +45,13 @@ export default function EditCommonsPage() {
     objectToAxiosPutParams,
     { onSuccess },
     // Stryker disable next-line all : hard to set up test for caching
-    [`/api/commons`]
+    [`/api/commons?id=${id}`]
   );
 
   const { isSuccess } = mutation
 
-  const onSubmit = async (data) => {
+    const onSubmit = async (data) => {
+      console.log("hello")
     mutation.mutate(data);
   }
 
@@ -63,7 +64,7 @@ export default function EditCommonsPage() {
       <div className="pt-2">
         <h1>Edit Common</h1>
         {common &&
-          <CreateCommonsForm initialCommon={common} submitAction={onSubmit} buttonLabel="Update" />
+          <EditCommonsForm initialCommon={common} submitAction={onSubmit} buttonLabel="Update" />
         }
       </div>
     </BasicLayout>
