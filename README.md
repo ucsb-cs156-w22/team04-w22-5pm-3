@@ -2,6 +2,15 @@
 
 [![codecov](https://codecov.io/gh/ucsb-cs156-w22/team04-w22-5pm-HappyCows/branch/main/graph/badge.svg?token=gPt8UBGSD9)](https://codecov.io/gh/ucsb-cs156-w22/team04-w22-5pm-HappyCows)
 
+# Heroku Links
+  Team 3:
+* Production: https://team04-w22-5pm-3.herokuapp.com/
+* QA: https://team04-w22-5pm-3-qa.herokuapp.com/
+  
+  Team 4:
+* Production: https://team04-w22-5pm-4.herokuapp.com/
+* QA: https://team04-w22-5pm-4-qa.herokuapp.com/
+
 # Storybook
 
 * [Production](https://ucsb-cs156-w22.github.io/team04-w22-5pm-HappyCows-docs/)
