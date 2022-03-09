@@ -12,13 +12,13 @@ const FarmStats = ({userCommons}) => {
                 [ADD PIC HERE] 
             </Card.Text>
             <Card.Text>
-                Total Wealth: ${userCommons?.totalWealth}
+                Total Wealth: ${userCommons?.totalWealth.toFixed(2)}
             </Card.Text>
             <Card.Text>
                 [ADD PIC HERE] 
             </Card.Text>
             <Card.Text>
-                Cow Health: {userCommons?.cowHealth}%
+                Cow Health: {userCommons?.cowHealth.toPrecision(2)}%
             </Card.Text>
         </Card.Body>
         </Card>
