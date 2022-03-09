@@ -64,13 +64,13 @@ export default function PlayPage() {
 
     const buyMutation = useBackendMutation(
       objectToAxiosParamsBuy,
-      { onSuccess: () => toast("yay!")},
+      { onSuccess: () => toast("Cow Purchased")},
       // Stryker disable next-line all : hard to set up test for caching
     );
   
    const sellMutation = useBackendMutation(
       objectToAxiosParamsSell,
-      { onSuccess: () => toast("yay!")},
+      { onSuccess: () => toast("Cow Sold")},
       // Stryker disable next-line all : hard to set up test for caching
     );
  
