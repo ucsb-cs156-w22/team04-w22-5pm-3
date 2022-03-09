@@ -6,15 +6,6 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/commonsUtil
 
 export default function DisplayTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
-
-    // Edit:
-    // const navigate = useNavigate();
-
-    // const editCallback = (cell) => {
-    //     navigate(`/collegesubreddits/edit/${cell.row.values.id}`)
-    // }
-
-    // Delete: 
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
