@@ -34,8 +34,7 @@ export default function DisplayTable({ commons }) {
         },
 
     ];
-
-    // columns.push(ButtonColumn("Delete", "danger", deleteCallback, "DisplayTable")); 
+    
     const memoizedColumns = React.useMemo(() => columns, []);
     const memoizedDates = React.useMemo(() => commons, [commons]);
     // Stryker enable ArrayDeclaration
