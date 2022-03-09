@@ -34,7 +34,7 @@ export default function HomePage() {
         existed = true;
       }
     }
-    if(existed){
+    if(existed === true){
       toast(`You have already joined the common with id: ${commons.id}, name: ${commons.name}`);
     }else{
       toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);
