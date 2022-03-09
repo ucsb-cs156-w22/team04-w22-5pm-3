@@ -66,11 +66,6 @@ describe("OurTable tests", () => {
 
         await waitFor(() => expect(getByTestId("Click-button-cell-row-0-col-Click-button-button")).toBeInTheDocument());
         const button = (getByTestId("Click-button-cell-row-0-col-Click-button-button"));
-        // debug();
-        console.log(button);
-        // await waitFor(() => );
-        //expect(clickMeCallback).toBeCalledTimes(1)
-        //await waitFor(clickMeCallback);
         fireEvent.click(button);
         await waitFor(() => expect(clickMeCallback).toBeCalledTimes(1));
     });
