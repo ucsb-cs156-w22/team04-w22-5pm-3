@@ -116,8 +116,7 @@ describe("HomePage tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-        // const user1 = getByTestId("commonsCard-id")
-        // fireEvent.change(user1, { target: { value: 5 } })
+
         await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
         const joinButton = getByTestId("commonsCard-button-Join-1");
         
