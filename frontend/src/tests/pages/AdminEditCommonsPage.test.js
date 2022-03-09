@@ -32,6 +32,7 @@ jest.mock('react-router-dom', () => {
 describe("when the backend doesn't return a todo", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
+    const queryClient = new QueryClient();
 
     beforeEach(() => {
         axiosMock.reset();
@@ -41,7 +42,7 @@ describe("when the backend doesn't return a todo", () => {
         axiosMock.onGet("/api/commons", { params: { id: 1 } }).timeout();
     });
 
-    const queryClient = new QueryClient();
+    
     test("renders header but table is not present", async () => {
         const {getByText, queryByTestId} = render(
             <QueryClientProvider client={queryClient}>
@@ -64,6 +65,21 @@ describe("when the backend doesn't return a todo", () => {
             axiosMock.resetHistory();
             axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
             axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
+            axiosMock.onGet("/api/commons", { params: { commonsId: 1 } }).reply(200, {
+                id: 1,
+                name: '1',
+                startingDate: "6/10/2021",
+                cowPrice: "1",
+                milkPrice: "1",
+                startingBalance: "1"
+            });
+            axiosMock.onPut('/api/commons').reply(200, {
+                id: "1",
+                name: '1',
+                cowPrice: "1",
+                milkPrice: "1",
+                startingBalance: "1"
+            });
         });
 
         
