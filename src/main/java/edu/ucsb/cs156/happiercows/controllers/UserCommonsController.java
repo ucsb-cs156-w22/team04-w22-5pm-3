@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,18 +60,21 @@ public class UserCommonsController extends ApiController {
 
   @ApiOperation(value = "Update Cow Health when buy (if this belongs to the user)")
   @PreAuthorize("hasRole('ROLE_USER')")
-  @GetMapping("/put")
+  @PutMapping("")
   public UserCommons putCowHealthById(
-      @ApiParam("commonsId") @RequestParam Long commonsId,
-      @ApiParam("Cow Health") @RequestParam double cowHealth,
-      @ApiParam("Cow Count") @RequestParam long cowCount
+      @ApiParam("commonsId") @RequestParam Long commonsId
+      // @ApiParam("Cow Health") @RequestParam double cowHealth,
+      // @ApiParam("Cow Count") @RequestParam long cowCount
   ) throws JsonProcessingException {
     User u = getCurrentUser().getUser();
     Long userId = u.getId();
     UserCommons userCommons = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
         .orElseThrow(
           () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));
-    userCommons.setCowHealth( (cowCount*cowHealth+1)/ (cowCount+1)) ;
+    long cowCount = userCommons.getCowCount();
+    double cowHealth = userCommons.getCowHealth();
+    userCommons.setCowHealth( (cowCount*cowHealth+1)/ (cowCount+1) );
+    userCommonsRepository.save(userCommons);
     return userCommons;
   }
 
