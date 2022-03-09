@@ -64,7 +64,7 @@ public class UserCommonsController extends ApiController {
 
   @ApiOperation(value = "Update user commons when cow is bought")
   @PreAuthorize("hasRole('ROLE_USER')")
-  @PutMapping("/buy")
+  @PostMapping("/buy")
   public UserCommons updateWhenBuy(
       @ApiParam("commonsId") @RequestParam Long commonsId) throws JsonProcessingException {
 
