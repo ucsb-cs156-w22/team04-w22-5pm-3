@@ -28,7 +28,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
                     </Col>
                 </Row>
           
-                    <strong>Note:</strong> If you increase cows, they will be automatically bought, and if you decrease, 
+                    Note: If you increase cows, they will be automatically bought, and if you decrease, 
                     the cows will be sold for the current cow price, time the health of that cow (as a percentage).
         
         </Card.Body>
