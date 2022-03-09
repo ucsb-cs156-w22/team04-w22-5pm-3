@@ -29,6 +29,6 @@ describe("when the backend doesn't return a todo", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
-        await waitFor(() => expect(getByText("Edit Commons")).toBeInTheDocument());
+        await waitFor(() => expect(getByText("Edit Common")).toBeInTheDocument());
     });
 });

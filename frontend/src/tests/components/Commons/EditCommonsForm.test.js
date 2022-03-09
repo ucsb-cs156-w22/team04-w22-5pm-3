@@ -21,20 +21,7 @@ describe("EditCommonsForm tests", () => {
         );
         await waitFor(() => expect(getByText(/Commons Name/)).toBeInTheDocument());
     });
-    test("Test that navigate(-1) is called when Cancel is clicked", async () => {
-
-        const { getByTestId } = render(
-            <Router  >
-                <EditCommonsForm />
-            </Router>
-        );
-        await waitFor(() => expect(getByTestId("CommonsForm-cancel")).toBeInTheDocument());
-        const cancelButton = getByTestId("CommonsForm-cancel");
-
-        fireEvent.click(cancelButton);
-
-        await waitFor(() => expect(mockedNavigate).toHaveBeenCalledWith(-1));
-    });
+    
 });
 
 
