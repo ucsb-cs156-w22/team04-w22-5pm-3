@@ -14,14 +14,12 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
-public class CreateCommonsParams {
+public class EditCommonsParams {
   private String name;
   @NumberFormat private double cowPrice;
   @NumberFormat private double milkPrice;
   @NumberFormat private double startingBalance;
-  @DateTimeFormat private LocalDateTime startingDate;
 }
-
 
 
 

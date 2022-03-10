@@ -4,8 +4,10 @@ import ProfilePage from "main/pages/ProfilePage";
 
 import AdminUsersPage from "main/pages/AdminUsersPage";
 import AdminCreateCommonsPage from "main/pages/AdminCreateCommonsPage";
+import AdminDisplayTablePage from "main/pages/AdminDisplayTablePage";
+import AdminEditCommonsPage from "main/pages/AdminEditCommonsPage";
 import { hasRole, useCurrentUser } from "main/utils/currentUser";
-import PlayPage from "main/pages/PlayPage"; 
+import PlayPage from "main/pages/PlayPage";
 
 
 function App() {
@@ -13,19 +15,25 @@ function App() {
   const { data: currentUser } = useCurrentUser();
 
   return (
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          {
-            hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/users" element={<AdminUsersPage />} />
-          }
-          {
-            hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/createcommons" element={<AdminCreateCommonsPage />} />
-          }
-          <Route path="/play/:commonsId" element={<PlayPage />} /> 
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/users" element={<AdminUsersPage />} />
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/createcommons" element={<AdminCreateCommonsPage />} />
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/displaytable" element={<AdminDisplayTablePage />} />
+        }
+        {
+          hasRole(currentUser, "ROLE_ADMIN") && <Route path="/admin/editcommons/:id" element={<AdminEditCommonsPage />} />
+        }
+        <Route path="/play/:commonsId" element={<PlayPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

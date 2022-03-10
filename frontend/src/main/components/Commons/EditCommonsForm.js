@@ -2,18 +2,20 @@ import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 
 export default function CreateCommonsForm(props) {
-  const { onSubmit } = props;
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm(
+    { defaultValues: props.initialCommon || {}, }
+  );
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(props.submitAction)}>
       <Form.Group className="mb-3">
         <Form.Label htmlFor="name">Commons Name</Form.Label>
         <Form.Control
+          data-testid="EditCommonsForm-name"
           id="name"
           type="text"
           isInvalid={!!errors.name}
@@ -27,6 +29,7 @@ export default function CreateCommonsForm(props) {
       <Form.Group className="mb-3">
         <Form.Label htmlFor="startingBalance">Starting Balance</Form.Label>
         <Form.Control
+          data-testid="EditCommonsForm-startingBalance"
           id="startingBalance"
           type="number"
           step="0.01"
@@ -45,6 +48,7 @@ export default function CreateCommonsForm(props) {
       <Form.Group className="mb-3">
         <Form.Label htmlFor="cowPrice">Cow Price</Form.Label>
         <Form.Control
+          data-testid="EditCommonsForm-cowPrice"
           id="cowPrice"
           type="number"
           step="0.01"
@@ -63,6 +67,7 @@ export default function CreateCommonsForm(props) {
       <Form.Group className="mb-3">
         <Form.Label htmlFor="milkPrice">Milk Price</Form.Label>
         <Form.Control
+          data-testid="EditCommonsForm-milkPrice"
           id="milkPrice"
           type="number"
           step="0.01"
@@ -78,24 +83,13 @@ export default function CreateCommonsForm(props) {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <Form.Group className="mb-3">
-        <Form.Label htmlFor="startingDate">Start Date</Form.Label>
-        <Form.Control
-          id="startingDate"
-          type="date"
-          isInvalid={!!errors.startingDate}
-          {...register("startingDate", {
-            valueAsDate: true,
-            validate: {
-              isPresent: (v) => !isNaN(v) || "Start date is required",
-            },
-          })}
-        />
-        <Form.Control.Feedback type="invalid">
-          {errors.startingDate?.message}
-        </Form.Control.Feedback>
-      </Form.Group>
-      <Button type="submit" data-testid="CreateCommonsForm-Create-Button">Create</Button>
+
+      <Button
+                type="submit"
+                data-testid="EditCommonsForm-submit"
+            >
+                {props.buttonLabel}
+            </Button>
     </Form>
   );
 }
