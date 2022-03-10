@@ -28,14 +28,13 @@ export default function HomePage() {
     );
   const onSuccess = (commons) => {
     // Stryker disable next-line all : hard to get variable
-    var existed = new Boolean(false);
+    let existed = false;
     for(let i = 0; i < commonsJoined.length; i++ ){
-      if(commonsJoined[i].id == commons.id){
+      if(commonsJoined[i].id === commons.id){
         existed = true;
       }
     }
-    if(existed == true){
-      // Stryker disable next-line all : hard to get variable
+    if(existed){
       toast(`You have already joined the common with id: ${commons.id}, name: ${commons.name}`);
     }else{
       toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);

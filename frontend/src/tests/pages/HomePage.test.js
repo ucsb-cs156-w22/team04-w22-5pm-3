@@ -127,7 +127,11 @@ describe("HomePage tests", () => {
                 </MemoryRouter>
             </QueryClientProvider>
         );
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> e6dc77f2a811e598746fdf440dc30ad1acdc29f6
         await waitFor(() => expect(getByTestId("commonsCard-button-Join-1")).toBeInTheDocument());
         const joinButton = getByTestId("commonsCard-button-Join-1");
         
