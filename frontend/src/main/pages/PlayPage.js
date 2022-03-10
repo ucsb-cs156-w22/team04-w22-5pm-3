@@ -102,7 +102,7 @@ export default function PlayPage() {
             <ManageCows userCommons={userCommons} onBuy={onBuy}
                         onSell={onSell} />
             <FarmStats userCommons={userCommons} />
-            <Profits userCommons={userCommons} />
+            <Profits userCommons={userCommons} profits={userCommonsProfits} />
           </CardGroup>
         }
       </Container>
