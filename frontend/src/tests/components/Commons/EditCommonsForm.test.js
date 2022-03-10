@@ -21,7 +21,7 @@ describe("EditCommonsForm tests", () => {
         );
         await waitFor(() => expect(getByText(/Commons Name/)).toBeInTheDocument());
     });
-    
+
 });
 
 
