@@ -109,11 +109,13 @@ public class CommonsController extends ApiController {
   public ResponseEntity<Commons> deleteUserFromCommon(@PathVariable("commonsId") Long commonsId,
       @PathVariable("userId") Long userId) throws Exception {
 
+
     UserCommons uc = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
       .orElseThrow(
           () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));;
       
     userCommonsRepository.deleteById(uc.getId());
+
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
   

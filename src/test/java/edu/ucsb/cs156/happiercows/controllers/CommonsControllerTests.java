@@ -208,6 +208,7 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals(responseString, cAsJson);
   }
 
+
   @WithMockUser(roles = { "ADMIN" })
   @Test
   public void admin_can_edit_an_existing_common() throws Exception {
@@ -334,10 +335,12 @@ public class CommonsControllerTests extends ControllerTestCase {
 
     verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(42L, 3L);
     verify(userCommonsRepository, times(1)).deleteById(1L);
+
   }
 
   @WithMockUser(roles = { "ADMIN" })
   @Test
+
   public void admin_cannot_edit_common_that_does_not_exist() throws Exception {
     // arrange
 
@@ -368,6 +371,10 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("Commons with id 67 not found", json.get("message"));
   }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9d68147898cee43f7ded81343dbfa6202a1ac84e
   public void delete_user_from_commons_nonexistent_test() throws Exception {
     when(userCommonsRepository.findByCommonsIdAndUserId(42L, 3L)).thenReturn(Optional.empty());
     
@@ -417,5 +424,3 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("Commons with id 2 not found", json.get("message"));
   }
-
-}
