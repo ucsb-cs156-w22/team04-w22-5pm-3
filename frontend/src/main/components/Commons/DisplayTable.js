@@ -6,6 +6,7 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/commonsUtil
 
 export default function DisplayTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
+
     const deleteMutation = useBackendMutation(
         cellToAxiosParamsDelete,
         { onSuccess: onDeleteSuccess },
@@ -15,6 +16,7 @@ export default function DisplayTable({ commons }) {
     const deleteCallback = async (cell) => {
         deleteMutation.mutate(cell);
     }
+
 
     const columns = [
         {
@@ -45,6 +47,7 @@ export default function DisplayTable({ commons }) {
 
     columns.push(ButtonColumn("Delete", "danger", deleteCallback, "DisplayTable")); //3rd param deleteCallback
     // Stryker disable next-line ArrayDeclaration : [] is a performance optimization
+
     const memoizedColumns = React.useMemo(() => columns, []);
     const memoizedDates = React.useMemo(() => commons, [commons]);
     // Stryker enable ArrayDeclaration

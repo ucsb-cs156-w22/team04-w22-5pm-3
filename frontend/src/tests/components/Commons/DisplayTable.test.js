@@ -1,7 +1,7 @@
 import { render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import AdminDisplayTablePage from "main/pages/AdminDisplayTablePage";
+import AdminCommonsTablePage from "main/pages/AdminCommonsTablePage";
 import DisplayTable from "main/components/Commons/DisplayTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
@@ -33,7 +33,7 @@ jest.mock('react-router-dom', () => {
     };
 });;
 
-describe("AdminDisplayTable tests", () => {
+describe("AdminCommonsTable tests", () => {
     const queryClient = new QueryClient();
     const axiosMock = new AxiosMockAdapter(axios);
     const testId = "DisplayTable";
@@ -107,7 +107,7 @@ describe("AdminDisplayTable tests", () => {
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <AdminDisplayTablePage />
+                    <AdminCommonsTablePage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
