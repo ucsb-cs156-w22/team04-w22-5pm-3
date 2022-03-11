@@ -137,7 +137,7 @@ public class CommonsController extends ApiController {
   @ApiOperation("Edit a common")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("")
-  public Object updateCommon(
+  public ResponseEntity<String> updateCommon(
       @ApiParam("id") @RequestParam Long id,
       @ApiParam("replacement common paramters") @RequestBody EditCommonsParams params) throws JsonProcessingException {
 
@@ -151,6 +151,7 @@ public class CommonsController extends ApiController {
 
     commonsRepository.save(oldCommons);
 
-    return genericMessage("Common %s edited".formatted(id));
+    String body = mapper.writeValueAsString(oldCommons);
+    return ResponseEntity.ok().body(body);
   }
 }

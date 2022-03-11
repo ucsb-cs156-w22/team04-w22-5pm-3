@@ -242,8 +242,8 @@ public class CommonsControllerTests extends ControllerTestCase {
       // assert
       verify(commonsRepository, times(1)).findById(67L);
       verify(commonsRepository, times(1)).save(commonsEdited); // should be saved with correct user
-      Map<String, Object> json = responseToJson(response);
-      assertEquals("Common 67 edited", json.get("message"));
+      String responseString = response.getResponse().getContentAsString();
+      assertEquals(requestBody, responseString);
   }
 
   @WithMockUser(roles = { "USER" })
