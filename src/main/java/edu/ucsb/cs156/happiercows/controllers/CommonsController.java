@@ -73,7 +73,11 @@ public class CommonsController extends ApiController {
   public ResponseEntity<String> createCommons(@ApiParam("name of commons") @RequestBody CreateCommonsParams params)
       throws JsonProcessingException {
     log.info("name={}", params.getName());
-    Commons c = Commons.builder().name(params.getName()).build();
+    Commons c = Commons.builder()
+      .name(params.getName())
+      .startDate(params.getStartDate())
+      .duration(params.getDuration())
+      .build();
     Commons savedCommons = commonsRepository.save(c);
     String body = mapper.writeValueAsString(savedCommons);
     log.info("body={}", body);
