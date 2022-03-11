@@ -58,26 +58,68 @@ public class UserCommonsControllerTests extends ControllerTestCase {
 
   @WithMockUser(roles = { "USER" })
   @Test
-  public void BuyTest() throws Exception {
-    UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(50).cowHealth(100).build();
-    userCommonsRepository.save(userCommons);
-    UserCommons expectedUserCommons = UserCommons.builder().id(2L).commonsId(2L).userId(1L).numCows(2).totalWealth(50).cowPrice(50).cowHealth(51).build();
-    ObjectMapper mapper = new ObjectMapper();
-    String requestBody = mapper.writeValueAsString(userCommons);
-
-
-    when(userCommonsRepository.save(eq(expectedUserCommons))).thenReturn(expectedUserCommons);
-
+  public void BuyTestWhenExists() throws Exception {
+    UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(10).cowHealth(0).build();
+    when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L),eq(1L))).thenReturn(Optional.of(userCommons));
+    UserCommons expectedUserCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(2).totalWealth(90).cowPrice(10).cowHealth(0.5).build();
 
     MvcResult response = mockMvc
         .perform(post("/api/usercommons/buy?commonsId=1").with(csrf()))
-        .andDo(print())
         .andExpect(status().isOk()).andReturn();
 
-    verify(userCommonsRepository, times(1)).save(userCommons);
+    String responseString = response.getResponse().getContentAsString();
+    verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(eq(1L),eq(1L));
+    UserCommons actualUserCommons = objectMapper.readValue(responseString, UserCommons.class);
+    assertEquals(expectedUserCommons, actualUserCommons);
+  }
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void BuyTestWhenNotExists() throws Exception {
+
+    when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L),eq(1L))).thenReturn(Optional.empty());
+    MvcResult response = mockMvc
+        .perform(post("/api/usercommons/buy?commonsId=1").with(csrf()))
+        .andExpect(status().is(404)).andReturn();
 
     String responseString = response.getResponse().getContentAsString();
-    String expectedJson = mapper.writeValueAsString(expectedUserCommons);
-    assertEquals(expectedJson, responseString);
+    verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(eq(1L),eq(1L));
+
+    assertEquals("{\"type\":\"EntityNotFoundException\",\"message\":\"UserCommons with commonsId 1 and userId 1 not found\"}", responseString);
+    
+  }
+
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void SellTestWhenExists() throws Exception {
+    UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(10).cowHealth(50).build();
+    when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L),eq(1L))).thenReturn(Optional.of(userCommons));
+    UserCommons expectedUserCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(0).totalWealth(104).cowPrice(10).cowHealth(50).build();
+
+    MvcResult response = mockMvc
+        .perform(put("/api/usercommons/sell?commonsId=1").with(csrf()))
+        .andExpect(status().isOk()).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+    verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(eq(1L),eq(1L));
+    UserCommons actualUserCommons = objectMapper.readValue(responseString, UserCommons.class);
+    assertEquals(expectedUserCommons, actualUserCommons);
+  }
+
+  @WithMockUser(roles = { "USER" })
+  @Test
+  public void SellTestWhenNotExists() throws Exception {
+
+    when(userCommonsRepository.findByCommonsIdAndUserId(eq(1L),eq(1L))).thenReturn(Optional.empty());
+    MvcResult response = mockMvc
+        .perform(put("/api/usercommons/sell?commonsId=1").with(csrf()))
+        .andExpect(status().is(404)).andReturn();
+
+    String responseString = response.getResponse().getContentAsString();
+    verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(eq(1L),eq(1L));
+
+    assertEquals("{\"type\":\"EntityNotFoundException\",\"message\":\"UserCommons with commonsId 1 and userId 1 not found\"}", responseString);
+    
   }
 }
