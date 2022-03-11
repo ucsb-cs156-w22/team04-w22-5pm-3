@@ -10,7 +10,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
         <Card.Header as="h5">Manage Cows</Card.Header>
         <Card.Body>
             {/* change $10 to info from fixture */}
-            <Card.Title>Market Cow Price: ${userCommons?.cowPrice}</Card.Title>
+            <Card.Title>Market Cow Price: ${userCommons?.commons?.cowPrice}</Card.Title>
            
                 <Row>
                     <Col>

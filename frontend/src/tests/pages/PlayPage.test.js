@@ -8,22 +8,13 @@ import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 
+
 jest.mock("react-router-dom", () => ({
     ...jest.requireActual("react-router-dom"),
     useParams: () => ({
         commonsId: 1
     })
 }));
-
-const mockToast = jest.fn();
-jest.mock('react-toastify', () => {
-    const originalModule = jest.requireActual('react-toastify');
-    return {
-        __esModule: true,
-        ...originalModule,
-        toast: (x) => mockToast(x)
-    };
-});
 
 describe("PlayPage tests", () => {
 
@@ -35,32 +26,11 @@ describe("PlayPage tests", () => {
         axiosMock.resetHistory();
         axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
         axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-        axiosMock.onPost("/api/usercommons/forcurrentuser", { params: { commonsId: 1 } }).reply(200, {
+        axiosMock.onGet("/api/usercommons/forcurrentuser", { params: { commonsId: 1 } }).reply(200, {
             commonsId: 1,
             id: 1,
-            totalWealth: 100,
-            userId: 1,
-            cowHealth: 100,
-            numCows: 0,
-            cowPrice: 50,
-        });
-        axiosMock.onPut("/api/usercommons/buy", { params: { commonsId: 1 } }).reply(200, {
-            commonsId: 1,
-            id: 1,
-            totalWealth: 50,
-            userId: 1,
-            cowHealth: 51,
-            numCows: 1,
-            cowPrice: 50,
-        });
-        axiosMock.onGet("/api/usercommons/sell", { params: { commonsId: 1 } }).reply(200, {
-            commonsId: 1,
-            id: 1,
-            totalWealth: 70.2,
-            userId: 1,
-            cowHealth: 51,
-            numCows: 0,
-            cowPrice: 50,
+            totalWealth: 0,
+            userId: 1
         });
         axiosMock.onGet("/api/commons", { params: { id: 1 } }).reply(200, {
             id: 1,
@@ -96,16 +66,10 @@ describe("PlayPage tests", () => {
 
         await waitFor(() => expect(getByTestId("buy-cow-button")).toBeInTheDocument());
         const buyCowButton = getByTestId("buy-cow-button");
-
         fireEvent.click(buyCowButton);
-
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Cow Purchased") });
 
         const sellCowButton = getByTestId("sell-cow-button");
         fireEvent.click(sellCowButton);
-
-
-        await waitFor(() => { expect(mockToast).toBeCalledWith("Cow Sold") });
 
     });
 
