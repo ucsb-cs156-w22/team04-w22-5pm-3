@@ -124,10 +124,10 @@ public class CommonsController extends ApiController {
   @DeleteMapping("delete")
   public ResponseEntity<String> deleteCommons(
     @ApiParam("id of common to delete") @RequestParam Long id) throws JsonProcessingException {
-      Commons commons = commonsRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException(Commons.class, id));
-
-      commonsRepository.deleteById(id);
+      Optional<UserCommons> uc = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
+        UserCommons userCommons = uc.orElseThrow(() -> new Exception(
+            String.format("UserCommons with commonsId=%d and userId=%d not found.", commonsId, userId)));
+        userCommonsRepository.deleteById(userCommons.getId());
       return ResponseEntity.ok().body(String.format("record %d deleted", id));
     }
 
