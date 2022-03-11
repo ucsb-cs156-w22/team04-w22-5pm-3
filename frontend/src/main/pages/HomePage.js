@@ -8,6 +8,7 @@ import Background from './../../assets/HomePageBackground.jpg';
 
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
 import { useQueryClient } from "react-query";
+import { toast } from "react-toastify";
 
 export default function HomePage() {
   const [commons, setCommons] = useState([]);
@@ -25,6 +26,20 @@ export default function HomePage() {
         url: "/api/commons/all"
       }
     );
+  const onSuccess = (commons) => {
+    // Stryker disable next-line all : hard to get variable
+    let existed = false;
+    for(let i = 0; i < commonsJoined.length; i++ ){
+      if(commonsJoined[i].id === commons.id){
+        existed = true;
+      }
+    }
+    if(existed){
+      toast(`You have already joined the common with id: ${commons.id}, name: ${commons.name}`);
+    }else{
+      toast(`Successfully joined the common with id: ${commons.id}, name: ${commons.name}`);
+    }
+  }
 
   const objectToAxiosParams = (newCommonsId) => ({
     url: "/api/commons/join",
@@ -36,7 +51,7 @@ export default function HomePage() {
 
   const mutation = useBackendMutation(
     objectToAxiosParams,
-    {  },
+    { onSuccess },
     // Stryker disable next-line all : hard to set up test for caching
     ["/api/currentUser"]
   );
