@@ -18,13 +18,10 @@ public class Commons {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
-
   private Double cowPrice;
   private Double milkPrice;
   private Double startingBalance;
   private LocalDateTime startingDate;
-
-  
   @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
   @JoinTable(name = "user_commons",
     joinColumns = @JoinColumn(name = "commons_id", referencedColumnName = "id"),
