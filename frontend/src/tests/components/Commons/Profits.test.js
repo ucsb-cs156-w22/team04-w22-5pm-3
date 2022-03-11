@@ -2,7 +2,6 @@ import { render } from "@testing-library/react";
 import Profits from "main/components/Commons/Profits"; 
 import userCommonsFixtures from "fixtures/userCommonsFixtures"; 
 import profitsFixtures from "fixtures/profitsFixtures";
-import moment from "moment";
 
 describe("Profits tests", () => {
 
@@ -50,7 +49,7 @@ describe("Profits tests", () => {
             const date = getByTestId(`ProfitsTable-cell-row-${i}-col-date`);
             expect(date).toBeInTheDocument();
             expect(typeof(date.textContent)).toBe('string');
-            expect(date.textContent).toEqual(moment(profitsFixtures.threeProfits[i].timestamp).format('YYYY-MM-DD'));
+            expect(date.textContent).toEqual(profitsFixtures.threeProfits[i].__date);
         }
     });
 });
