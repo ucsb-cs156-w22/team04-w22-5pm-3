@@ -121,7 +121,12 @@ public class UserCommonsControllerTests extends ControllerTestCase {
     String responseString = response.getResponse().getContentAsString();
     verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(eq(1L),eq(1L));
 
-    assertEquals("{\"type\":\"EntityNotFoundException\",\"message\":\"UserCommons with commonsId 1 and userId 1 not found\"}", responseString);
+    ObjectMapper om = new ObjectMapper();
+    String expectedError = "{\"type\":\"EntityNotFoundException\",\"message\":\"UserCommons with commonsId 1 and userId 1 not found\"}";
+    Map<String, Object> m1 = (Map<String, Object>)(om.readValue(responseString, Map.class));
+    Map<String, Object> m2 = (Map<String, Object>)(om.readValue(expectedError, Map.class));
+    assertEquals(m1,m2);
+    
     
   }
 }
