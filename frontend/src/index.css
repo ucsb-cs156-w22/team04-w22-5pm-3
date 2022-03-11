@@ -11,4 +11,25 @@ body {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
+
+  
+  progress {
+    border: none;
+    width: 325px;
+    height: 15px;
+    background: rgb(114, 101, 101);
+  }
+  
+  progress::-webkit-progress-value {
+    background: rgb(184, 50, 50);
+  }
+
+  h5 { 
+    font-weight: bolder;
+}
+
+  .icon {
+    width: auto;
+    height: auto;
+  }
   

@@ -1,17 +1,13 @@
 package edu.ucsb.cs156.happiercows.entities;
-
+import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Builder;
 import lombok.AccessLevel;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.List;
-
 import javax.persistence.*;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,16 +16,19 @@ import javax.persistence.*;
 public class Commons {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;  
+  private long id;
   private String name;
-  private double cowPrice;
 
+  private Double cowPrice;
+  private Double milkPrice;
+  private Double startingBalance;
+  private LocalDateTime startingDate;
+
+  
   @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-  @JoinTable(name = "user_commons", 
-    joinColumns = @JoinColumn(name = "commons_id", referencedColumnName = "id"), 
+  @JoinTable(name = "user_commons",
+    joinColumns = @JoinColumn(name = "commons_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     @JsonIgnore // https://www.baeldung.com/jackson-bidirectional-relationships-and-infinite-recursion
     private List<User> users;
-
 }
-
