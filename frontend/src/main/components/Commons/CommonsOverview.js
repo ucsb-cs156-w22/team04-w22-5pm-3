@@ -7,7 +7,7 @@ function getStartDate(timestamp) {
 }
 
 function getEndDate(timestamp, duration) {
-    return moment(timestamp).add(duration+1,'days').format('MM/DD/YYYY');
+    return moment(timestamp).add({days: duration+1}).format('MM/DD/YYYY');
 }
 
 export default function CommonsOverview({ commons }) {
@@ -19,9 +19,11 @@ export default function CommonsOverview({ commons }) {
         <Card data-testid="CommonsOverview">
             <Card.Header as="h5">Announcements</Card.Header>
             <Card.Body>
-                <Card.Title>Today is day {currentDay}! This game will end on {endDate}.</Card.Title>
+                <Card.Title data-testid="title">Today is day {currentDay}! This game will end on {endDate}.</Card.Title>
                 <Card.Text>Total Players: {commons.totalPlayers}</Card.Text>
             </Card.Body>
         </Card>
     );
 }; 
+
+export { getStartDate, getEndDate };
