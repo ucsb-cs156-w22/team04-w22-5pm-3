@@ -1,5 +1,8 @@
+import BasicLayout from "main/layouts/BasicLayout/BasicLayout";
 import React from "react";
 import { Card } from "react-bootstrap";
+import Cash from "./../../../assets/Cash.png";
+import Health from "./../../../assets/Health.png";
 
 const FarmStats = ({userCommons}) => {
    
@@ -9,16 +12,19 @@ const FarmStats = ({userCommons}) => {
         <Card.Body>
             {/* update total wealth and cow health with data from fixture */}
             <Card.Text>
-                [ADD PIC HERE] 
+                <img class="icon" src={Cash} alt="Cash"></img>
             </Card.Text>
             <Card.Text>
                 Total Wealth: ${userCommons?.totalWealth}
             </Card.Text>
             <Card.Text>
-                [ADD PIC HERE] 
+                <img class="icon" src={Health} alt="Health"></img>
             </Card.Text>
             <Card.Text>
                 Cow Health: {userCommons?.cowHealth}%
+            </Card.Text>
+            <Card.Text>
+                <progress id="health" value={userCommons?.cowHealth} max="100"></progress>
             </Card.Text>
         </Card.Body>
         </Card>
