@@ -43,7 +43,7 @@ describe("AdminCommonsTablePage tests", () => {
             </QueryClientProvider>
         );
 
-        await waitFor(() => expect(getByText("Admin Display Table Page")).toBeInTheDocument());
+        await waitFor(() => expect(getByText("Commons Table")).toBeInTheDocument());
 
     });
 });
