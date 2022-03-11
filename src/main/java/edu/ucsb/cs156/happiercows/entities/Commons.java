@@ -22,6 +22,8 @@ public class Commons {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;  
   private String name;
+  private String startDate;
+  private int duration;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
   @JoinTable(name = "user_commons", 
