@@ -109,6 +109,8 @@ public class UserCommonsControllerTests extends ControllerTestCase {
     verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(eq(1L),eq(1L));
     UserCommons actualUserCommons = objectMapper.readValue(responseString, UserCommons.class);
     assertEquals(expectedUserCommons, actualUserCommons);
+
+  }
     
     
   @WithMockUser(roles = { "USER" })
