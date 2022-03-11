@@ -128,6 +128,7 @@ public class CommonsController extends ApiController {
         .orElseThrow(() -> new EntityNotFoundException(Commons.class, id));
 
       commonsRepository.deleteById(id);
+      return ResponseEntity.ok().body(String.format("record %d deleted", id));
     }
 
   @ApiOperation("Edit a common")
