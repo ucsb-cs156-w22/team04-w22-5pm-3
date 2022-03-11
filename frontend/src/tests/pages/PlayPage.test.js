@@ -27,7 +27,7 @@ jest.mock('react-toastify', () => {
 
 describe("PlayPage tests", () => {
 
-    const axiosMock = new AxiosMockAdapter(axios);
+    const axiosMock = new AxiosMockAdapter(axios, { onNoMatch: "throwException" });
     const queryClient = new QueryClient();
 
     beforeEach(() => {
@@ -35,7 +35,7 @@ describe("PlayPage tests", () => {
         axiosMock.resetHistory();
         axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
         axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-        axiosMock.onPost("/api/usercommons/forcurrentuser", { params: { commonsId: 1 } }).reply(200, {
+        axiosMock.onGet("/api/usercommons/forcurrentuser", { params: { commonsId: 1 } }).reply(200, {
             commonsId: 1,
             id: 1,
             totalWealth: 100,
@@ -44,7 +44,7 @@ describe("PlayPage tests", () => {
             numCows: 0,
             cowPrice: 50,
         });
-        axiosMock.onPut("/api/usercommons/buy", { params: { commonsId: 1 } }).reply(200, {
+        axiosMock.onPost("/api/usercommons/buy").reply(200, {
             commonsId: 1,
             id: 1,
             totalWealth: 50,
@@ -53,7 +53,7 @@ describe("PlayPage tests", () => {
             numCows: 1,
             cowPrice: 50,
         });
-        axiosMock.onGet("/api/usercommons/sell", { params: { commonsId: 1 } }).reply(200, {
+        axiosMock.onPost("/api/usercommons/sell").reply(200, {
             commonsId: 1,
             id: 1,
             totalWealth: 70.2,

@@ -48,9 +48,11 @@ export default function PlayPage() {
       },
     );
 
+  console.log("commonsId:", commonsId);
+
   const objectToAxiosParamsBuy = ({ commonsId }) => ({
     url: "/api/usercommons/buy",
-    method: "PUT",
+    method: "POST",
     params: {
       commonsId: commonsId,
     },
@@ -58,7 +60,7 @@ export default function PlayPage() {
 
   const objectToAxiosParamsSell = ({ commonsId }) => ({
     url: "/api/usercommons/sell",
-    method: "PUT",
+    method: "POST",
     params: {
       commonsId: commonsId,
     },
