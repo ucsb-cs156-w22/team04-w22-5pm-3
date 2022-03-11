@@ -1,7 +1,9 @@
 import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
+import moment from "moment";
 
 export default function CreateCommonsForm(props) {
+  var currentDay = moment().format('YYYY-MM-DD')
   const { onSubmit } = props;
   const {
     register,
@@ -83,6 +85,7 @@ export default function CreateCommonsForm(props) {
         <Form.Control
           id="startDate"
           type="date"
+          min={currentDay}
           isInvalid={!!errors.startDate}
           {...register("startDate", {
             valueAsDate: true,
@@ -93,6 +96,24 @@ export default function CreateCommonsForm(props) {
         />
         <Form.Control.Feedback type="invalid">
           {errors.startDate?.message}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label htmlFor="duration">Duration of Game</Form.Label>
+        <Form.Control
+          id="duration"
+          type="number"
+          step="1"
+          isInvalid={!!errors.duration}
+          {...register("duration", {
+            valueAsNumber: true,
+            required: "Duration is required",
+            min: { value: 1, message: "Duration must be positive" },
+          })}
+        />
+        <Form.Control.Feedback type="invalid">
+          {errors.duration?.message}
         </Form.Control.Feedback>
       </Form.Group>
       <Button type="submit" data-testid="CreateCommonsForm-Create-Button">Create</Button>
