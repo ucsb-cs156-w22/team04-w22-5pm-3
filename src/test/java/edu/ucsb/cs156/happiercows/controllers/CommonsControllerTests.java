@@ -139,9 +139,8 @@ public class CommonsControllerTests extends ControllerTestCase {
             .andExpect(status().isOk()).andReturn();
 
     verify(commonsRepository, times(1)).findById(1L);
-        verify(commonsRepository, times(1)).deleteById(1L);
-        String responseString = response.getResponse().getContentAsString();
-        assertEquals("record 1 deleted", responseString);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("Record 1 deleted", json.get("message"));
   }
 
   @WithMockUser(roles = { "ADMIN" })

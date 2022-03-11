@@ -27,6 +27,9 @@ import edu.ucsb.cs156.happiercows.errors.EntityNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+
+import javax.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Api(description = "Commons")
@@ -122,13 +125,13 @@ public class CommonsController extends ApiController {
   @ApiOperation("Delete a commons by id")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("delete")
-  public ResponseEntity<String> deleteCommons(
+  public Object deleteCommons(
     @ApiParam("id of common to delete") @RequestParam Long id) throws JsonProcessingException {
       Commons commons = commonsRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException(Commons.class, id));
 
       commonsRepository.deleteById(id);
-      return ResponseEntity.ok().body(String.format("record %d deleted", id));
+      return genericMessage("Record %s deleted".formatted(id));
     }
 
   @ApiOperation("Edit a common")
