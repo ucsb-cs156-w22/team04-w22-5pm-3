@@ -1,5 +1,5 @@
 const profitsFixtures = {
-    threeProfits: [
+    fourProfits: [
         {
             "id": 1,
             "profit": 100,
@@ -15,6 +15,12 @@ const profitsFixtures = {
         {
             "id": 3,
             "profit": 102,
+            "timestamp": 1641801600000,
+            "__date": "2022-01-10"
+        },
+        {
+            "id": 4,
+            "profit": 103,
             "timestamp": 1642665600000,
             "__date": "2022-01-20"
         }
