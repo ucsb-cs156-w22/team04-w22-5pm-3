@@ -1,26 +1,24 @@
 import { render } from "@testing-library/react";
-import Profits from "main/components/Commons/Profits"; 
-import userCommonsFixtures from "fixtures/userCommonsFixtures"; 
-import profitsFixtures from "fixtures/profitsFixtures";
-import moment from "moment";
+import ProfitsTable from "main/components/Commons/ProfitsTable"; 
+import profitsTableFixtures from "fixtures/profitsTableFixtures";
 
 describe("Profits tests", () => {
 
     test("renders without crashing", () => {
         render(
-            <Profits userCommons={userCommonsFixtures.oneUserCommons[0]} profits={profitsFixtures.threeProfits} />
+            <ProfitsTable profits={profitsTableFixtures.threeFormattedProfits} />
         );
     });
 
     test("renders without crashing, no profits", () => {
         render(
-            <Profits userCommons={userCommonsFixtures.oneUserCommons[0]} profits={[]} />
+            <ProfitsTable profits={[]} />
         );
     });
 
     test("renders properly with specified profits", () => {
         const { getByTestId } = render(
-            <Profits userCommons={userCommonsFixtures.oneUserCommons[0]} profits={profitsFixtures.threeProfits} />
+            <ProfitsTable profits={profitsTableFixtures.threeFormattedProfits} />
         );
 
         // Ensure headers are correct
@@ -44,13 +42,14 @@ describe("Profits tests", () => {
             const profit = getByTestId(`ProfitsTable-cell-row-${i}-col-profit`);
             expect(profit).toBeInTheDocument();
             expect(typeof(profit.textContent)).toBe('string');
-            expect(+profit.textContent).toEqual(profitsFixtures.threeProfits[i].profit);
+            expect(+profit.textContent).toEqual(profitsTableFixtures.threeFormattedProfits[i].profit);
 
             // Date
             const date = getByTestId(`ProfitsTable-cell-row-${i}-col-date`);
             expect(date).toBeInTheDocument();
             expect(typeof(date.textContent)).toBe('string');
-            expect(date.textContent).toEqual(moment(profitsFixtures.threeProfits[i].timestamp).format('YYYY-MM-DD'));
+            expect(date.textContent).toEqual(profitsTableFixtures.threeFormattedProfits[i].date);
         }
     });
+
 });
