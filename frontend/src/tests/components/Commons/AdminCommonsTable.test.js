@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import DisplayTable from "main/components/Commons/DisplayTable";
+import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
@@ -15,7 +15,7 @@ describe("AdminCommonsTable tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <DisplayTable commons={[]} currentUser={currentUser} />
+                    <AdminCommonsTable commons={[]} currentUser={currentUser} />
                 </MemoryRouter>
             </QueryClientProvider>
 
@@ -29,7 +29,7 @@ describe("AdminCommonsTable tests", () => {
         const { getByText, getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <DisplayTable commons={commonsFixtures.threeCommons} currentUser={currentUser} />
+                    <AdminCommonsTable commons={commonsFixtures.threeCommons} currentUser={currentUser} />
                 </MemoryRouter>
             </QueryClientProvider>
 
@@ -37,7 +37,7 @@ describe("AdminCommonsTable tests", () => {
 
         const expectedHeaders = ["ID#", "Name", "Starting Balance", "Cow Price", "Milk Price", "Start Date"];
         const expectedFields = ["id", "startingBalance", "cowPrice", "milkPrice", "startingDate"];
-        const testId = "DisplayTable";
+        const testId = "AdminCommonsTable";
 
         expectedHeaders.forEach((headerText) => {
             const header = getByText(headerText);
