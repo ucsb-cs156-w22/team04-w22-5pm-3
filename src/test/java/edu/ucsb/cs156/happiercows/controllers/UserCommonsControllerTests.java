@@ -57,7 +57,7 @@ public class UserCommonsControllerTests extends ControllerTestCase {
   private ObjectMapper objectMapper;
 
 
-  @WithMockUser(roles = { "USER" })
+  @WithMockUser(roles = { "USER","ADMIN" })
   @Test
   public void BuyTestWhenExists() throws Exception {
     UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(10).cowHealth(0).build();
@@ -74,7 +74,7 @@ public class UserCommonsControllerTests extends ControllerTestCase {
     assertEquals(expectedUserCommons, actualUserCommons);
   }
 
-  @WithMockUser(roles = { "USER" })
+  @WithMockUser(roles = { "USER","ADMIN" })
   @Test
   public void BuyTestWhenNotExists() throws Exception {
 
@@ -94,7 +94,7 @@ public class UserCommonsControllerTests extends ControllerTestCase {
   }
 
 
-  @WithMockUser(roles = { "USER" })
+  @WithMockUser(roles = { "USER","ADMIN" })
   @Test
   public void SellTestWhenExists() throws Exception {
     UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(10).cowHealth(50).build();
@@ -113,7 +113,7 @@ public class UserCommonsControllerTests extends ControllerTestCase {
   }
     
     
-  @WithMockUser(roles = { "USER" })
+  @WithMockUser(roles = { "USER" ,"ADMIN"})
   @Test
   public void SellTestWhenNotExists() throws Exception {
 
