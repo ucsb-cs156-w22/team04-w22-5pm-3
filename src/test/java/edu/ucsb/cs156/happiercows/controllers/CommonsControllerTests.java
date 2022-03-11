@@ -371,10 +371,7 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("Commons with id 67 not found", json.get("message"));
   }
-<<<<<<< HEAD
-=======
 
->>>>>>> 9d68147898cee43f7ded81343dbfa6202a1ac84e
   public void delete_user_from_commons_nonexistent_test() throws Exception {
     when(userCommonsRepository.findByCommonsIdAndUserId(42L, 3L)).thenReturn(Optional.empty());
     
@@ -424,3 +421,6 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("Commons with id 2 not found", json.get("message"));
   }
+
+
+}
