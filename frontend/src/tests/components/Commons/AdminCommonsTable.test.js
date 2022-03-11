@@ -1,8 +1,8 @@
 import { render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
-import AdminDisplayTablePage from "main/pages/AdminDisplayTablePage";
-import DisplayTable from "main/components/Commons/DisplayTable";
+import AdminCommonsTablePage from "main/pages/AdminCommonsTablePage";
+import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
@@ -33,17 +33,12 @@ jest.mock('react-router-dom', () => {
     };
 });;
 
-describe("AdminDisplayTable tests", () => {
+describe("AdminCommonsTable tests", () => {
     const queryClient = new QueryClient();
     const axiosMock = new AxiosMockAdapter(axios);
-    const testId = "DisplayTable";
+    const testId = "AdminCommonsTable";
 
-    const setupUserOnly = () => {
-        axiosMock.reset();
-        axiosMock.resetHistory();
-        axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
-        axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
-    };
+   
 
     const setupAdminUser = () => {
         axiosMock.reset();
@@ -58,7 +53,7 @@ describe("AdminDisplayTable tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <DisplayTable commons={[]} currentUser={currentUser} />
+                    <AdminCommonsTable commons={[]} currentUser={currentUser} />
                 </MemoryRouter>
             </QueryClientProvider>
 
@@ -72,7 +67,7 @@ describe("AdminDisplayTable tests", () => {
         const { getByText, getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <DisplayTable commons={commonsFixtures.threeCommons} currentUser={currentUser} />
+                    <AdminCommonsTable commons={commonsFixtures.threeCommons} currentUser={currentUser} />
                 </MemoryRouter>
             </QueryClientProvider>
 
@@ -80,7 +75,7 @@ describe("AdminDisplayTable tests", () => {
 
         const expectedHeaders = ["ID#", "Name", "Starting Balance", "Cow Price", "Milk Price", "Start Date"];
         const expectedFields = ["id", "name", "startingBalance", "cowPrice", "milkPrice", "startingDate"];
-        const testId = "DisplayTable";
+        const testId = "AdminCommonsTable";
 
         expectedHeaders.forEach((headerText) => {
             const header = getByText(headerText);
@@ -116,7 +111,7 @@ describe("AdminDisplayTable tests", () => {
         const { getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <AdminDisplayTablePage />
+                    <AdminCommonsTablePage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
@@ -142,15 +137,15 @@ describe("AdminDisplayTable tests", () => {
         const { getByText, getByTestId } = render(
           <QueryClientProvider client={queryClient}>
             <MemoryRouter>
-              <DisplayTable commons={commonsFixtures.threeCommons} />
+              <AdminCommonsTable commons={commonsFixtures.threeCommons} />
             </MemoryRouter>
           </QueryClientProvider>
     
         );
     
-        await waitFor(() => { expect(getByTestId(`DisplayTable-cell-row-0-col-id`)).toHaveTextContent("5"); });
+        await waitFor(() => { expect(getByTestId(`AdminCommonsTable-cell-row-0-col-id`)).toHaveTextContent("5"); });
     
-        const editButton = getByTestId(`DisplayTable-cell-row-0-col-Edit-button`);
+        const editButton = getByTestId(`AdminCommonsTable-cell-row-0-col-Edit-button`);
         expect(editButton).toBeInTheDocument();
         
         fireEvent.click(editButton);
@@ -159,3 +154,4 @@ describe("AdminDisplayTable tests", () => {
       });
 
 });
+

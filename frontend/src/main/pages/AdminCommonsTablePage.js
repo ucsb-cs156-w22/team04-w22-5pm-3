@@ -9,10 +9,11 @@ import { useBackendMutation } from "main/utils/useBackend";
 
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import DisplayTable from "main/components/Commons/DisplayTable";
+import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 
-const AdminDisplayTablePage = () => {
+const AdminCommonsTablePage = () => {
+
     const { data: commons, error: _error, status: _status } =
         useBackend(
             // Stryker disable next-line all : don't test internal caching of React Query
@@ -23,10 +24,10 @@ const AdminDisplayTablePage = () => {
 
     return (
         <BasicLayout>
-            <header>Admin Display Table Page</header>
-            <DisplayTable commons={commons} />
+            <header>Commons Table</header>
+            <AdminCommonsTable commons={commons} />
         </BasicLayout>
     )
 }
 
-export default AdminDisplayTablePage;
+export default AdminCommonsTablePage;

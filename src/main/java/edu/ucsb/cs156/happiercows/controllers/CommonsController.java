@@ -108,10 +108,14 @@ public class CommonsController extends ApiController {
   @DeleteMapping("/{commonsId}/users/{userId}")
   public ResponseEntity<Commons> deleteUserFromCommon(@PathVariable("commonsId") Long commonsId,
       @PathVariable("userId") Long userId) throws Exception {
-    Optional<UserCommons> uc = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
-    UserCommons userCommons = uc.orElseThrow(() -> new Exception(
-        String.format("UserCommons with commonsId=%d and userId=%d not found.", commonsId, userId)));
-    userCommonsRepository.deleteById(userCommons.getId());
+
+
+    UserCommons uc = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
+      .orElseThrow(
+          () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));;
+      
+    userCommonsRepository.deleteById(uc.getId());
+
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
   

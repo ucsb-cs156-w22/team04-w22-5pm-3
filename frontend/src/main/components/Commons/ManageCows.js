@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, _Image, Button, Row, Col} from "react-bootstrap";
-// import cowHead from "../../../CowHead.png"; 
+import cowHead from "./../../../assets/CowHead.png"; 
 
 // add parameters 
 const ManageCows = ({userCommons, onBuy, onSell}) =>  {
@@ -15,7 +15,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
                 <Row>
                     <Col>
                         <Card.Text>
-                            [ADD PIC HERE] 
+                            <img class="icon" src={cowHead}></img>
                         </Card.Text>
                     </Col>
                     <Col>
@@ -29,7 +29,7 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
                 </Row>
           
                     Note: If you increase cows, they will be automatically bought, and if you decrease, 
-                    the cows will be sold for the current cow price, time the health of that cow (as a percentage). 
+                    the cows will be sold for the current cow price, time the health of that cow (as a percentage).
         
         </Card.Body>
         </Card>

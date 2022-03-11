@@ -1,0 +1,19 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs/blocks";
+import { action } from "@storybook/addon-actions";
+import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
+import commonsFixtures from "fixtures/commonsFixtures";
+
+<Meta
+  title="components/Commons/AdminCommonsTable"
+  component={AdminCommonsTable}
+/>
+
+# AdminCommonsTable
+
+A table for displaying commons details
+
+<Canvas>
+  <Story name="uncontrolled">
+    <AdminCommonsTable commons={commonsFixtures.threeCommons} />
+  </Story>
+</Canvas>

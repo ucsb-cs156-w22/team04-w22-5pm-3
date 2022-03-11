@@ -4,9 +4,8 @@ import { useBackendMutation } from "main/utils/useBackend";
 import { useNavigate } from "react-router-dom";
 import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/commonsUtils"
 
-export default function DisplayTable({ commons }) {
+export default function AdminCommonsTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
-
     // Edit:
     const navigate = useNavigate();
 
@@ -24,6 +23,7 @@ export default function DisplayTable({ commons }) {
     const deleteCallback = async (cell) => {
         deleteMutation.mutate(cell);
     }
+
 
     const columns = [
         {
@@ -52,9 +52,10 @@ export default function DisplayTable({ commons }) {
         }
     ];
 
-    columns.push(ButtonColumn("Delete", "danger", deleteCallback, "DisplayTable")); //3rd param deleteCallback
-    columns.push(ButtonColumn("Edit", "primary", editCallback, "DisplayTable"));
+    columns.push(ButtonColumn("Delete", "danger", deleteCallback, "AdminCommonsTable")); //3rd param deleteCallback
+    columns.push(ButtonColumn("Edit", "primary", editCallback, "AdminCommonsTable"));
     // Stryker disable next-line ArrayDeclaration : [] is a performance optimization
+
     const memoizedColumns = React.useMemo(() => columns, []);
     const memoizedDates = React.useMemo(() => commons, [commons]);
     // Stryker enable ArrayDeclaration
@@ -62,6 +63,6 @@ export default function DisplayTable({ commons }) {
     return <OurTable
         data={memoizedDates}
         columns={memoizedColumns}
-        testid={"DisplayTable"}
+        testid={"AdminCommonsTable"}
     />;
 };

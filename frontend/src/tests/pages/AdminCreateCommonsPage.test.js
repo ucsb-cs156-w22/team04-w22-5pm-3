@@ -93,7 +93,7 @@ describe("AdminCreateCommonsPage tests", () => {
             startingDate: '2022-05-12T00:00:00.000Z'
         };
 
-        expect(axiosMock.history.post[0].data).toEqual( JSON.stringify(expectedCommons) );
+        expect(axiosMock.history.post[0].data).toEqual(JSON.stringify(expectedCommons));
     });
 
 });
