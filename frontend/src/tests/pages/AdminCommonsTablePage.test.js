@@ -35,7 +35,7 @@ describe("AdminCommonsTablePage tests", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
     const queryClient = new QueryClient();
-    const testId = "AdminCommonsTable";
+    const testId = "DisplayTable";
 
 
     beforeEach(() => {

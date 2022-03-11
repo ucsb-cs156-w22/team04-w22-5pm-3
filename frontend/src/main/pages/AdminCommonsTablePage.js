@@ -9,7 +9,7 @@ import { useBackendMutation } from "main/utils/useBackend";
 
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
+import DisplayTable from "main/components/Commons/DisplayTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 
 const AdminCommonsTablePage = () => {
@@ -25,7 +25,7 @@ const AdminCommonsTablePage = () => {
     return (
         <BasicLayout>
             <header>Commons Table</header>
-            <AdminCommonsTable commons={commons} />
+            <DisplayTable commons={commons} />
         </BasicLayout>
     )
 }

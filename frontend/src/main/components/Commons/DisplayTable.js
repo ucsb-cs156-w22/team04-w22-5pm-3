@@ -4,7 +4,7 @@ import { useBackendMutation } from "main/utils/useBackend";
 import { useNavigate } from "react-router-dom";
 import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/commonsUtils"
 
-export default function AdminCommonsTable({ commons }) {
+export default function DisplayTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
 
     const deleteMutation = useBackendMutation(
@@ -45,7 +45,7 @@ export default function AdminCommonsTable({ commons }) {
         }
     ];
 
-    columns.push(ButtonColumn("Delete", "danger", deleteCallback, "AdminCommonsTable")); //3rd param deleteCallback
+    columns.push(ButtonColumn("Delete", "danger", deleteCallback, "DisplayTable")); //3rd param deleteCallback
     // Stryker disable next-line ArrayDeclaration : [] is a performance optimization
 
     const memoizedColumns = React.useMemo(() => columns, []);
@@ -55,6 +55,6 @@ export default function AdminCommonsTable({ commons }) {
     return <OurTable
         data={memoizedDates}
         columns={memoizedColumns}
-        testid={"AdminCommonsTable"}
+        testid={"DisplayTable"}
     />;
 };

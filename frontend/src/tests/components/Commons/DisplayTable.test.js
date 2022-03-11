@@ -2,7 +2,7 @@ import { render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import AdminCommonsTablePage from "main/pages/AdminCommonsTablePage";
-import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
+import DisplayTable from "main/components/Commons/DisplayTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
 
@@ -36,7 +36,7 @@ jest.mock('react-router-dom', () => {
 describe("AdminCommonsTable tests", () => {
     const queryClient = new QueryClient();
     const axiosMock = new AxiosMockAdapter(axios);
-    const testId = "AdminCommonsTable";
+    const testId = "DisplayTable";
 
    
 
@@ -53,7 +53,7 @@ describe("AdminCommonsTable tests", () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <AdminCommonsTable commons={[]} currentUser={currentUser} />
+                    <DisplayTable commons={[]} currentUser={currentUser} />
                 </MemoryRouter>
             </QueryClientProvider>
 
@@ -67,7 +67,7 @@ describe("AdminCommonsTable tests", () => {
         const { getByText, getByTestId } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <AdminCommonsTable commons={commonsFixtures.threeCommons} currentUser={currentUser} />
+                    <DisplayTable commons={commonsFixtures.threeCommons} currentUser={currentUser} />
                 </MemoryRouter>
             </QueryClientProvider>
 
@@ -75,7 +75,7 @@ describe("AdminCommonsTable tests", () => {
 
         const expectedHeaders = ["ID#", "Name", "Starting Balance", "Cow Price", "Milk Price", "Start Date"];
         const expectedFields = ["id", "name", "startingBalance", "cowPrice", "milkPrice", "startingDate"];
-        const testId = "AdminCommonsTable";
+        const testId = "DisplayTable";
 
         expectedHeaders.forEach((headerText) => {
             const header = getByText(headerText);
