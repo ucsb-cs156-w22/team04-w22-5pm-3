@@ -27,6 +27,7 @@ describe(CreateCommonsForm, () => {
     userEvent.type(screen.getByLabelText(/cow price/i), "99.95");
     userEvent.type(screen.getByLabelText(/milk price/i), "5.99");
     userEvent.type(screen.getByLabelText(/start date/i), "2021-01-01");
+    userEvent.type(screen.getByLabelText(/duration of game/i), "15")
     userEvent.click(screen.getByRole("button"));
 
     await waitFor(() => expect(onSubmit).toBeCalledTimes(1));
@@ -36,6 +37,7 @@ describe(CreateCommonsForm, () => {
       cowPrice: 99.95,
       milkPrice: 5.99,
       startDate: new Date("2021-01-01"),
+      duration: 15,
     });
   });
 });
