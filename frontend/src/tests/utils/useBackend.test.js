@@ -5,6 +5,8 @@ import mockConsole from "jest-mock-console";
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
 import { useBackend, useBackendMutation } from "main/utils/useBackend";
+import { apiCurrentUserFixtures }  from "fixtures/currentUserFixtures";
+import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
 
 
 jest.mock('react-router-dom');
@@ -22,6 +24,16 @@ jest.mock('react-toastify', () => {
 
 describe("utils/useBackend tests", () => {
     describe("utils/useBackend useBackend tests", () => {
+        
+        const axiosMock = new AxiosMockAdapter(axios);
+
+        beforeEach(()=>{
+            axiosMock.reset();
+            axiosMock.resetHistory();
+            axiosMock.onGet("/api/systemInfo").reply(200, systemInfoFixtures.showingNeither);
+            axiosMock.onGet("/api/currentUser").reply(200, apiCurrentUserFixtures.userOnly);
+    
+        });
 
         test("test useBackend handles 404 error correctly", async () => {
 
@@ -40,7 +52,7 @@ describe("utils/useBackend tests", () => {
                 </QueryClientProvider>
             );
 
-            var axiosMock = new AxiosMockAdapter(axios);
+            
 
             axiosMock.onGet("/api/admin/users").reply(404, {});
 
