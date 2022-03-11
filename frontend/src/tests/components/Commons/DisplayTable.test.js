@@ -6,7 +6,7 @@ import { currentUserFixtures } from "fixtures/currentUserFixtures";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 
-describe("AdminDisplayTable tests", () => {
+describe("AdminCommonsTable tests", () => {
     const queryClient = new QueryClient();
 
     test("renders without crashing for empty table for admin", () => {

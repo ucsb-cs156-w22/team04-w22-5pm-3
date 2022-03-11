@@ -1,6 +1,6 @@
 import { fireEvent, render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import AdminDisplayTablePage from "main/pages/AdminDisplayTablePage";
+import AdminCommonsTablePage from "main/pages/AdminCommonsTablePage";
 import { MemoryRouter } from "react-router-dom";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
@@ -20,7 +20,7 @@ jest.mock('react-router-dom', () => {
 });
 
 
-describe("AdminDisplayTablePage tests", () => {
+describe("AdminCommonsTablePage tests", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
     const queryClient = new QueryClient();
@@ -38,7 +38,7 @@ describe("AdminDisplayTablePage tests", () => {
         const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MemoryRouter>
-                    <AdminDisplayTablePage />
+                    <AdminCommonsTablePage />
                 </MemoryRouter>
             </QueryClientProvider>
         );
