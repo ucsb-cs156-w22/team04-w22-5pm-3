@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCurrentUser } from "main/utils/currentUser";
 
 // example
 //  queryKey ["/api/users/all"] for "api/users/all"
@@ -27,19 +28,23 @@ import { toast } from "react-toastify";
 
 export function useBackend(queryKey, axiosParameters, initialData) {
 
-  return useQuery(queryKey, async () => {
-    try {
-      const response = await axios(axiosParameters);
-      return response.data;
-    } catch (e) {
-      const errorMessage = `Error communicating with backend via ${axiosParameters.method} on ${axiosParameters.url}`;
-      toast(errorMessage);
-      console.error(errorMessage, e);
-      throw e;
-    }
-  }, {
-    initialData,
-  });
+    const { data: currentUser } = useCurrentUser();
+    return useQuery(queryKey, async () => {
+        try {
+            const response = await axios(axiosParameters);
+            return response.data;
+        } catch (e) {
+            const errorMessage = `Error communicating with backend via ${axiosParameters.method} on ${axiosParameters.url}`;
+            if(currentUser.loggedIn){
+                toast(errorMessage);
+            }
+            console.error(errorMessage, e);
+            throw e;
+        }
+    }, {
+        initialData
+    });
+
 }
 
 const reportAxiosError = (error) => {
