@@ -178,7 +178,8 @@ public class UserCommonsControllerTests extends ControllerTestCase {
     assertEquals(result, uc);
   }
     
-    
+  @WithMockUser(roles = { "USER" })
+  @Test  
   public void get_user_commons_by_id_nonexistent_test() throws Exception {
 
     when(userCommonsRepository.findByCommonsIdAndUserId(42L, 1L)).thenReturn(Optional.empty());
