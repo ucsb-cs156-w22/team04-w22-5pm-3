@@ -9,6 +9,11 @@ export default function AdminCommonsTable({ commons }) {
     // Edit:
     const navigate = useNavigate();
 
+
+    // Edit:
+    const navigate = useNavigate();
+
+
     const editCallback = (cell) => {
         navigate(`/admin/editcommons/${cell.row.values.id}`)
     }
@@ -23,6 +28,7 @@ export default function AdminCommonsTable({ commons }) {
     const deleteCallback = async (cell) => {
         deleteMutation.mutate(cell);
     }
+
 
 
     const columns = [
@@ -49,6 +55,7 @@ export default function AdminCommonsTable({ commons }) {
         {
             Header: "Start Date",
             accessor: "startingDate",
+
         }
     ];
 

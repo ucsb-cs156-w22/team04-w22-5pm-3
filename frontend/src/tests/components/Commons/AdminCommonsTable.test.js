@@ -1,10 +1,13 @@
+
 import { render, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { MemoryRouter } from "react-router-dom";
 import AdminCommonsTablePage from "main/pages/AdminCommonsTablePage";
+
 import AdminCommonsTable from "main/components/Commons/AdminCommonsTable";
 import commonsFixtures from "fixtures/commonsFixtures";
 import { currentUserFixtures } from "fixtures/currentUserFixtures";
+
 
 import { fireEvent } from "@testing-library/react";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
@@ -74,7 +77,9 @@ describe("AdminCommonsTable tests", () => {
         );
 
         const expectedHeaders = ["ID#", "Name", "Starting Balance", "Cow Price", "Milk Price", "Start Date"];
+
         const expectedFields = ["id", "name", "startingBalance", "cowPrice", "milkPrice", "startingDate"];
+
         const testId = "AdminCommonsTable";
 
         expectedHeaders.forEach((headerText) => {
@@ -89,6 +94,7 @@ describe("AdminCommonsTable tests", () => {
 
         expect(getByTestId(`${testId}-cell-row-0-col-id`)).toHaveTextContent("5");
         expect(getByTestId(`${testId}-cell-row-1-col-id`)).toHaveTextContent("4");
+
 
         const editButton = getByTestId(`${testId}-cell-row-0-col-Edit-button`);
         expect(editButton).toBeInTheDocument();

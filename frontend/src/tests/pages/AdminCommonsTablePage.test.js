@@ -4,6 +4,9 @@ import AdminCommonsTablePage from "main/pages/AdminCommonsTablePage";
 import { MemoryRouter } from "react-router-dom";
 import { apiCurrentUserFixtures } from "fixtures/currentUserFixtures";
 import { systemInfoFixtures } from "fixtures/systemInfoFixtures";
+import commonsFixtures from "fixtures/commonsFixtures";
+
+
 
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
@@ -30,11 +33,15 @@ jest.mock('react-toastify', () => {
 });
 
 
+
 describe("AdminCommonsTablePage tests", () => {
 
     const axiosMock = new AxiosMockAdapter(axios);
     const queryClient = new QueryClient();
     const testId = "AdminCommonsTable";
+
+    const testId = "AdminCommonsTable";
+
 
 
     beforeEach(() => {
