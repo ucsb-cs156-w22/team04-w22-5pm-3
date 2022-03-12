@@ -37,5 +37,9 @@ public class UserCommons {
 
   @Column(name="cow_health")
   private double cowHealth;
+
+  public double getCowSellingPrice() {
+    return ( this.getCowPrice() * 0.8 * (this.getCowHealth()/100) );
+  }
 }
 
