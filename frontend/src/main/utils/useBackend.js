@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useCurrentUser } from "main/utils/currentUser";
 
 // example
 //  queryKey ["/api/users/all"] for "api/users/all"
@@ -26,14 +27,16 @@ import { toast } from "react-toastify";
 // );
 
 export function useBackend(queryKey, axiosParameters, initialData) {
-
+    const { data: currentUser } = useCurrentUser();
   return useQuery(queryKey, async () => {
     try {
       const response = await axios(axiosParameters);
       return response.data;
     } catch (e) {
       const errorMessage = `Error communicating with backend via ${axiosParameters.method} on ${axiosParameters.url}`;
-      toast(errorMessage);
+            if(currentUser.loggedIn){
+            toast(errorMessage);
+            }
       console.error(errorMessage, e);
       throw e;
     }
@@ -49,13 +52,12 @@ const reportAxiosError = (error) => {
 };
 
 const wrappedParams = async (params) => {
-  try {
-    console.log("params:", params);
-    return await (await axios(params)).data;
-  } catch (rejectedValue) {
-    reportAxiosError(rejectedValue);
-    throw rejectedValue;
-  }
+    try {
+        return await (await axios(params)).data;
+    } catch (rejectedValue) {
+        reportAxiosError(rejectedValue);
+        throw rejectedValue;
+    }
 };
 
 export function useBackendMutation(objectToAxiosParams, useMutationParams, queryKey = null) {
@@ -68,7 +70,6 @@ export function useBackendMutation(objectToAxiosParams, useMutationParams, query
     // Stryker disable all: Not sure how to set up the complex behavior needed to test this
     onSettled: () => {
       if (queryKey !== null) {
-        console.log("invalidating queryKey", queryKey);
         queryClient.invalidateQueries(queryKey);
       }
     },
