@@ -56,6 +56,7 @@ export default function AdminCommonsTable({ commons }) {
     columns.push(ButtonColumn("Edit", "primary", editCallback, "AdminCommonsTable"));
     // Stryker disable next-line ArrayDeclaration : [] is a performance optimization
 
+
     const memoizedColumns = React.useMemo(() => columns, []);
     const memoizedDates = React.useMemo(() => commons, [commons]);
     // Stryker enable ArrayDeclaration
