@@ -6,7 +6,6 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/commonsUtil
 
 export default function AdminCommonsTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
-
     // Edit:
     const navigate = useNavigate();
 
