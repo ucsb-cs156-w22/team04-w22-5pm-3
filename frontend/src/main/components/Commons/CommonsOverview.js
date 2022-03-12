@@ -34,9 +34,11 @@ export default function CommonsOverview({ commons }) {
         <Card data-testid="CommonsOverview">
             <Card.Header as="h5">Announcements</Card.Header>
             <Card.Body>
-                <Card.Title>Today is day {currentDay}! This game will end on {formattedEndDate}.</Card.Title>
+                <Card.Title data-testid="title">Today is day {currentDay}! This game will end on {formattedEndDate}.</Card.Title>
                 <Card.Text>Total Players: {commons.totalPlayers}</Card.Text>
             </Card.Body>
         </Card>
     );
 }; 
+
+export { getNumberOfDays, getEndDate };
