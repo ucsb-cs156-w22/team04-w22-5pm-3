@@ -49,6 +49,7 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                     <NavDropdown.Item href="/admin/createcommons">Create Commons</NavDropdown.Item>
                     <NavDropdown.Item href="/admin/users">Users</NavDropdown.Item>
                     <NavDropdown.Item href="/admin/commons-table">List Commons Details</NavDropdown.Item>
+
                   </NavDropdown>
                 )
               }
@@ -59,7 +60,7 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
                 currentUser && currentUser.loggedIn ? (
                   <>
                     <Navbar.Text className="me-3" as={Link} to="/profile">Welcome, {currentUser.root.user.email}</Navbar.Text>
-                    <Button onClick={doLogout}>Log Out</Button>
+                    <Button href="/" onClick={doLogout}>Log Out</Button>
                   </>
                 ) : (
                   <Button href="/oauth2/authorization/google">Log In</Button>
@@ -72,3 +73,4 @@ export default function AppNavbar({ currentUser, systemInfo, doLogout, currentUr
     </>
   );
 }
+
