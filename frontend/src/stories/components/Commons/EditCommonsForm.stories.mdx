@@ -1,0 +1,19 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs/blocks";
+import { action } from "@storybook/addon-actions";
+import EditCommonsForm from "main/components/Commons/EditCommonsForm";
+import commonsFixtures from "fixtures/commonsFixtures";
+
+<Meta
+  title="components/Commons/EditCommonsForm"
+  component={EditCommonsForm}
+/>
+
+# AdminCommonsTable
+
+A table for displaying commons details
+
+<Canvas>
+  <Story name="uncontrolled">
+    <EditCommonsForm buttonLabel={"Submit"} />
+  </Story>
+</Canvas>

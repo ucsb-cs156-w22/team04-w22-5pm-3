@@ -26,7 +26,20 @@ public class UserCommons {
   @Column(name="user_id")
   private long userId;  
 
-  private int totalWealth;
+  @Column(name="num_cows")
+  private int numCows;
 
+  @Column(name="total_wealth")
+  private double totalWealth;
+
+  @Column(name="cow_price")
+  private double cowPrice;
+
+  @Column(name="cow_health")
+  private double cowHealth;
+
+  public double getCowSellingPrice() {
+    return ( this.getCowPrice() * 0.8 * (this.getCowHealth()/100) );
+  }
 }
 
