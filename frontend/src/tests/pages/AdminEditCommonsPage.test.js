@@ -155,7 +155,7 @@ describe("AdminEditCommonsPagePage tests", () => {
 
             await waitFor(() => expect(mockToast).toBeCalled);
             expect(mockToast).toBeCalledWith("Common Updated - id: 1 name: 2");
-            expect(mockNavigate).toBeCalledWith({ "to": "/admin/displaytable" });
+            expect(mockNavigate).toBeCalledWith({ "to": "/admin/commons-table" });
 
             expect(axiosMock.history.put.length).toBe(1); // times called
             expect(axiosMock.history.put[0].params).toEqual({ id: "1" });
