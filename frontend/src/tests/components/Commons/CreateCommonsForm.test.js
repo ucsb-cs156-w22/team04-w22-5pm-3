@@ -35,7 +35,7 @@ describe(CreateCommonsForm, () => {
       startingBalance: 1000.00,
       cowPrice: 99.95,
       milkPrice: 5.99,
-      startDate: new Date("2021-01-01"),
+      startingDate: new Date("2021-01-01"),
     });
   });
 });
