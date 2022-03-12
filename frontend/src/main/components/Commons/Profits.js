@@ -1,11 +1,17 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import ProfitsTable from "main/components/Commons/ProfitsTable"
-import moment from "moment";
 
 // Helper function that accepts a timestamp and returns date as string
 function format_date(timestamp) {
-    return moment(timestamp).format('YYYY-MM-DD');
+    // Helper function to prepend a zero to single-digit values (e.g., 5 --> 05, 10 --> 10)
+    function pad(n) { return n < 10 ? '0' + n : n; }
+
+    // Convert timestamp to JavaScript Date object
+    let d = new Date(timestamp);
+
+    // Return desired formatting (YYYY/MM/DD)
+    return `${d.getUTCFullYear()}-${pad(d.getUTCMonth()+1)}-${pad(d.getUTCDate())}`;
 }
 
 
