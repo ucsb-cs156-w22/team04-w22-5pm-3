@@ -75,7 +75,7 @@ export default function PlayPage() {
             <CardGroup >
               <FarmStats userCommons={userCommons} />
               <ManageCows userCommons={userCommons} onBuy={onBuy} onSell={onSell} />
-              <Profits userCommons={userCommons} />
+              <Profits userCommons={userCommons} profits={userCommonsProfits} />
             </CardGroup>
           }
         </Container>
