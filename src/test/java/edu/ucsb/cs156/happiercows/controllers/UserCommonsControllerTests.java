@@ -109,13 +109,34 @@ public class UserCommonsControllerTests extends ControllerTestCase {
         UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(50).cowHealth(100).build();
         UserCommons expectedUserCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(2).totalWealth(50).cowPrice(50).cowHealth(50.5).build();
         ObjectMapper mapper = new ObjectMapper();
-        String requestBody = mapper.writeValueAsString(userCommons);
 
 
         when(userCommonsRepository.findByCommonsIdAndUserId(1L, 1L)).thenReturn(Optional.of(userCommons));
 
         MvcResult response = mockMvc
                 .perform(post("/api/usercommons/buy?commonsId=1").with(csrf()))
+                .andDo(print())
+                .andExpect(status().isOk()).andReturn();
+
+        verify(userCommonsRepository, times(1)).save(userCommons);
+
+        String responseString = response.getResponse().getContentAsString();
+        String expectedJson = mapper.writeValueAsString(expectedUserCommons);
+        assertEquals(expectedJson, responseString);
+    }
+
+    @WithMockUser(roles = {"USER"})
+    @Test
+    public void SellTest() throws Exception {
+        UserCommons userCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(1).totalWealth(100).cowPrice(50).cowHealth(100).build();
+        UserCommons expectedUserCommons = UserCommons.builder().id(1L).commonsId(1L).userId(1L).numCows(0).totalWealth(140).cowPrice(50).cowHealth(100).build();
+        ObjectMapper mapper = new ObjectMapper();
+
+
+        when(userCommonsRepository.findByCommonsIdAndUserId(1L, 1L)).thenReturn(Optional.of(userCommons));
+
+        MvcResult response = mockMvc
+                .perform(post("/api/usercommons/sell?commonsId=1").with(csrf()))
                 .andDo(print())
                 .andExpect(status().isOk()).andReturn();
 
