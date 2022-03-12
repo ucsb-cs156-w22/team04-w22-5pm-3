@@ -1,8 +1,8 @@
 import React from "react";
 import { useTable, useSortBy } from 'react-table'
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 
-export default function OurTable({ columns, data, testid="testid"}) {
+export default function OurTable({ columns, data, testid = "testid" }) {
 
   const {
     getTableProps,
@@ -24,12 +24,12 @@ export default function OurTable({ columns, data, testid="testid"}) {
               >
                 {column.render('Header')}
                 <span data-testid={`${testid}-header-${column.id}-sort-carets`}>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
-                  </span>
+                  {column.isSorted
+                    ? column.isSortedDesc
+                      ? ' 🔽'
+                      : ' 🔼'
+                    : ''}
+                </span>
               </th>
             ))}
           </tr>
@@ -40,7 +40,7 @@ export default function OurTable({ columns, data, testid="testid"}) {
           prepareRow(row)
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map( (cell,_index) => {
+              {row.cells.map((cell, _index) => {
                 return (
                   <td
                     {...cell.getCellProps()}
@@ -56,4 +56,21 @@ export default function OurTable({ columns, data, testid="testid"}) {
       </tbody>
     </Table>
   )
+}
+
+export function ButtonColumn(label, variant, callback, testid) {
+  const column = {
+    Header: label,
+    id: label,
+    Cell: ({ cell }) => (
+      <Button
+        variant={variant}
+        onClick={() => callback(cell)}
+        data-testid={`${testid}-cell-row-${cell.row.index}-col-${cell.column.id}-button`}
+      >
+        {label}
+      </Button>
+    )
+  }
+  return column;
 }
