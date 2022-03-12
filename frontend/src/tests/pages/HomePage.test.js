@@ -20,6 +20,16 @@ jest.mock('react-toastify', () => {
     };
 });
 
+const mockNavigate = jest.fn();
+jest.mock('react-router-dom', () => {
+    const originalModule = jest.requireActual('react-router-dom');
+    return {
+        __esModule: true,
+        ...originalModule,
+        Navigate: (x) => { mockNavigate(x); return null; }
+    };
+});
+
 describe("HomePage tests", () => {
     const queryClient = new QueryClient();
     const axiosMock = new AxiosMockAdapter(axios);
@@ -80,6 +90,7 @@ describe("HomePage tests", () => {
         await waitFor(() => expect(getByTestId("commonsCard-button-Visit-1")).toBeInTheDocument());
         const visitButton = getByTestId("commonsCard-button-Visit-1");
         fireEvent.click(visitButton);
+        
     });
 
     test("Calls the callback when you click join to a unjoined commom", async () => {
