@@ -2,7 +2,6 @@ import { render } from "@testing-library/react";
 import Profits from "main/components/Commons/Profits"; 
 import userCommonsFixtures from "fixtures/userCommonsFixtures"; 
 import profitsFixtures from "fixtures/profitsFixtures";
-import moment from "moment";
 
 describe("Profits tests", () => {
 
@@ -20,7 +19,7 @@ describe("Profits tests", () => {
 
     test("renders properly with specified profits", () => {
         const { getByTestId } = render(
-            <Profits userCommons={userCommonsFixtures.oneUserCommons[0]} profits={profitsFixtures.threeProfits} />
+            <Profits userCommons={userCommonsFixtures.oneUserCommons[0]} profits={profitsFixtures.fourProfits} />
         );
 
         // Ensure headers are correct
@@ -39,18 +38,18 @@ describe("Profits tests", () => {
 
         // Ensure all profits and dates are equal to those specified in the fixture
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < profitsFixtures.fourProfits.length; i++) {
             // Profit
             const profit = getByTestId(`ProfitsTable-cell-row-${i}-col-profit`);
             expect(profit).toBeInTheDocument();
             expect(typeof(profit.textContent)).toBe('string');
-            expect(+profit.textContent).toEqual(profitsFixtures.threeProfits[i].profit);
+            expect(+profit.textContent).toEqual(profitsFixtures.fourProfits[i].profit);
 
             // Date
             const date = getByTestId(`ProfitsTable-cell-row-${i}-col-date`);
             expect(date).toBeInTheDocument();
             expect(typeof(date.textContent)).toBe('string');
-            expect(date.textContent).toEqual(moment(profitsFixtures.threeProfits[i].timestamp).format('YYYY-MM-DD'));
+            expect(date.textContent).toEqual(profitsFixtures.fourProfits[i].__date);
         }
     });
 });
