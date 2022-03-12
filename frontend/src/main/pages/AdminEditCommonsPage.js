@@ -56,7 +56,7 @@ export default function EditCommonsPage() {
   }
 
   if (isSuccess) {
-    return <Navigate to="/admin/displaytable" />
+    return <Navigate to="/admin/commons-table" />
   }
 
   return (
