@@ -9,11 +9,6 @@ export default function AdminCommonsTable({ commons }) {
     // Edit:
     const navigate = useNavigate();
 
-
-    // Edit:
-    const navigate = useNavigate();
-
-
     const editCallback = (cell) => {
         navigate(`/admin/editcommons/${cell.row.values.id}`)
     }
