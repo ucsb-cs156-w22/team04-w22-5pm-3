@@ -10,7 +10,6 @@ import commonsFixtures from "fixtures/commonsFixtures";
 
 import axios from "axios";
 import AxiosMockAdapter from "axios-mock-adapter";
-import commonsFixtures from "fixtures/commonsFixtures";
 
 const mockedNavigate = jest.fn();
 jest.mock('react-router-dom', () => {
