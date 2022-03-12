@@ -40,7 +40,6 @@ describe("AdminCommonsTablePage tests", () => {
     const queryClient = new QueryClient();
     const testId = "AdminCommonsTable";
 
-    const testId = "AdminCommonsTable";
 
 
 
