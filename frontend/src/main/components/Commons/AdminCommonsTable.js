@@ -7,6 +7,17 @@ import { cellToAxiosParamsDelete, onDeleteSuccess } from "main/utils/commonsUtil
 export default function AdminCommonsTable({ commons }) {
     // Stryker disable ArrayDeclaration : [columns] and [students] are performance optimization; mutation preserves correctness
 
+    const deleteMutation = useBackendMutation(
+        cellToAxiosParamsDelete,
+        { onSuccess: onDeleteSuccess },
+        // Stryker disable next-line all: not need to test mutation for the next line
+        ["/api/commons/all"],
+    );
+    const deleteCallback = async (cell) => {
+        deleteMutation.mutate(cell);
+    }
+
+
     const columns = [
         {
             Header: "ID#",
@@ -31,9 +42,11 @@ export default function AdminCommonsTable({ commons }) {
         {
             Header: "Start Date",
             accessor: "startingDate",
-        },
-
+        }
     ];
+
+    columns.push(ButtonColumn("Delete", "danger", deleteCallback, "AdminCommonsTable")); //3rd param deleteCallback
+    // Stryker disable next-line ArrayDeclaration : [] is a performance optimization
 
     const memoizedColumns = React.useMemo(() => columns, []);
     const memoizedDates = React.useMemo(() => commons, [commons]);
