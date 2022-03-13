@@ -140,9 +140,8 @@ public class CommonsControllerTests extends ControllerTestCase {
             .andExpect(status().isOk()).andReturn();
 
     verify(commonsRepository, times(1)).findById(1L);
-        verify(commonsRepository, times(1)).deleteById(1L);
-        String responseString = response.getResponse().getContentAsString();
-        assertEquals("record 1 deleted", responseString);
+    Map<String, Object> json = responseToJson(response);
+    assertEquals("Record 1 deleted", json.get("message"));
   }
 
   @WithMockUser(roles = { "ADMIN" })
@@ -423,6 +422,94 @@ public class CommonsControllerTests extends ControllerTestCase {
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("Commons with id 2 not found", json.get("message"));
   }
+
+  // get all
+ @Test
+ public void api_commons_all__logged_out__returns_403() throws Exception {
+   mockMvc.perform(get("/api/commons/all"))
+       .andExpect(status().is(403));
+ }
+
+ @WithMockUser(roles = { "USER" , "ADMIN"})
+ @Test
+ public void api_commons_all__logged_in__returns_ok() throws Exception {
+   mockMvc.perform(get("/api/commons/all"))
+     .andExpect(status().isOk());
+ }
+
+ // get
+ @Test
+ public void api_commons_get__logged_out__returns_403() throws Exception {
+   mockMvc.perform(get("/api/commons?id=1"))
+       .andExpect(status().is(403));
+ }
+
+
+ // join commons
+ @Test
+ public void api_commons_join__logged_out__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/join"))
+     .andExpect(status().is(403));
+ }
+
+ // Authorization tests for /api/commons/post
+
+ @Test
+ public void api_commons_post__logged_out__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/new"))
+     .andExpect(status().is(403));
+ }
+
+ @WithMockUser(roles = { "USER" })
+ @Test
+ public void api_commons_post__user_logged_in__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/new"))
+     .andExpect(status().is(403));
+ }
+
+ // Authorization tests for /api/commons/put
+ @Test
+ public void api_commons_put__logged_out__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons?id=1"))
+     .andExpect(status().is(403));
+ }
+
+ @WithMockUser(roles = { "USER" })
+ @Test
+ public void api_commons_put__user_logged_in__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons?id=1"))
+     .andExpect(status().is(403));
+ }
+
+
+ // Authorization tests for /api/commons/{commonsId}/users/{userId}
+ // delete user
+ @Test
+ public void api_commons_delete_user__logged_out__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/1/users/1"))
+     .andExpect(status().is(403));
+ }
+
+ @WithMockUser(roles = { "USER" })
+ @Test
+ public void api_commons_delete_user__user_logged_in__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/1/users/1"))
+     .andExpect(status().is(403));
+ }
+
+ // Authorization tests for /api/commons/delete
+  @Test
+ public void api_commons_delete__logged_out__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/delete"))
+     .andExpect(status().is(403));
+ }
+
+ @WithMockUser(roles = { "USER" })
+ @Test
+ public void api_commons_delete__user_logged_in__returns_403() throws Exception {
+   mockMvc.perform(post("/api/commons/delete"))
+     .andExpect(status().is(403));
+ }
 
 
 }

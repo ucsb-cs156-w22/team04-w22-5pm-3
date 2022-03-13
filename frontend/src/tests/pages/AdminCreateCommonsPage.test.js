@@ -92,11 +92,11 @@ describe("AdminCreateCommonsPage tests", () => {
             startingBalance: 500,
             cowPrice: 10,
             milkPrice: 5,
-            startingDate: '2022-05-12T00:00:00.000Z',
+             startingDate: '2022-05-12T00:00:00.000Z',
             endingDate:'2022-06-12T00:00:00.000Z' 
         };
 
-        expect(axiosMock.history.post[0].data).toEqual( JSON.stringify(expectedCommons) );
+        expect(axiosMock.history.post[0].data).toEqual(JSON.stringify(expectedCommons));
     });
 
 });
