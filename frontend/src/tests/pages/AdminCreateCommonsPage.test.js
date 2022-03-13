@@ -53,7 +53,7 @@ describe("AdminCreateCommonsPage tests", () => {
             "id": 5,
             "name": "Seths Common",
             "day": 5,
-            "endDate": "6/11/2021",
+            "endingDate": "2021-06-11",
             "totalPlayers": 50,
             "cowPrice": 15,
         });
@@ -72,7 +72,8 @@ describe("AdminCreateCommonsPage tests", () => {
         const startingBalanceField = getByLabelText("Starting Balance");
         const cowPriceField = getByLabelText("Cow Price");
         const milkPriceField = getByLabelText("Milk Price");
-        const startingDateField = getByLabelText("Start Date");
+        const startDateField = getByLabelText("Start Date");
+        const endDateField = getByLabelText("End Date");
         const button = getByTestId("CreateCommonsForm-Create-Button");
 
 
@@ -80,7 +81,8 @@ describe("AdminCreateCommonsPage tests", () => {
         fireEvent.change(startingBalanceField, { target: { value: '500' } })
         fireEvent.change(cowPriceField, { target: { value: '10' } })
         fireEvent.change(milkPriceField, { target: { value: '5' } })
-        fireEvent.change(startingDateField, { target: { value: '2022-05-12' } })
+        fireEvent.change(startDateField, { target: { value: '2022-05-12' } })
+        fireEvent.change(endDateField, { target: { value: '2022-06-12' } })
         fireEvent.click(button);
 
         await waitFor(() => expect(axiosMock.history.post.length).toBe(1));
@@ -90,7 +92,8 @@ describe("AdminCreateCommonsPage tests", () => {
             startingBalance: 500,
             cowPrice: 10,
             milkPrice: 5,
-            startingDate: '2022-05-12T00:00:00.000Z'
+             startingDate: '2022-05-12T00:00:00.000Z',
+            endingDate:'2022-06-12T00:00:00.000Z' 
         };
 
         expect(axiosMock.history.post[0].data).toEqual(JSON.stringify(expectedCommons));
