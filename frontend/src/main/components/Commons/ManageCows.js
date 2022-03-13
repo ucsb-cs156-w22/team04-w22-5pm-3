@@ -1,17 +1,17 @@
 import React from "react";
 import { Card, _Image, Button, Row, Col} from "react-bootstrap";
-import cowHead from "./../../../assets/CowHead.png"; 
+import cowHead from "./../../../assets/CowHead.png";
 
-// add parameters 
-const ManageCows = ({userCommons, onBuy, onSell}) =>  {
+// add parameters
+const ManageCows = ({userCommons, commons, onBuy, onSell}) =>  {
     // update cowPrice from fixture
     return (
         <Card>
         <Card.Header as="h5">Manage Cows</Card.Header>
         <Card.Body>
             {/* change $10 to info from fixture */}
-            <Card.Title>Market Cow Price: ${userCommons?.commons?.cowPrice}</Card.Title>
-           
+            <Card.Title>Market Cow Price: ${commons?.cowPrice}</Card.Title>
+
                 <Row>
                     <Col>
                         <Card.Text>
@@ -27,13 +27,13 @@ const ManageCows = ({userCommons, onBuy, onSell}) =>  {
                         <br/>
                     </Col>
                 </Row>
-          
-                    Note: If you increase cows, they will be automatically bought, and if you decrease, 
+
+                    Note: If you increase cows, they will be automatically bought, and if you decrease,
                     the cows will be sold for the current cow price, time the health of that cow (as a percentage).
-        
+
         </Card.Body>
         </Card>
-    ); 
-}; 
+    );
+};
 
-export default ManageCows; 
+export default ManageCows;

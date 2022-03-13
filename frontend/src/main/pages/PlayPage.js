@@ -4,7 +4,7 @@ import { useCurrentUser } from "main/utils/currentUser";
 import CommonsPlay from "main/components/Commons/CommonsPlay";
 import { useParams } from "react-router-dom";
 import CommonsOverview from "main/components/Commons/CommonsOverview";
-import { Container, CardGroup } from "react-bootstrap";
+import { CardGroup, Container } from "react-bootstrap";
 import ManageCows from "main/components/Commons/ManageCows";
 import FarmStats from "main/components/Commons/FarmStats";
 import Profits from "main/components/Commons/Profits";
@@ -17,7 +17,11 @@ export default function PlayPage() {
   const { commonsId } = useParams();
   const { data: currentUser } = useCurrentUser();
 
-  const { data: userCommons, error: userCommonsError, status: userCommonsStatus } =
+  const {
+    data: userCommons,
+    error: userCommonsError,
+    status: userCommonsStatus,
+  } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
       [`/api/usercommons/forcurrentuser?commonsId=${commonsId}`],
@@ -25,9 +29,9 @@ export default function PlayPage() {
         method: "GET",
         url: "/api/usercommons/forcurrentuser",
         params: {
-          commonsId: commonsId
-        }
-      }
+          commonsId: commonsId,
+        },
+      },
     );
 
   const { data: commons, error: commonsError, status: commonsStatus } =
@@ -38,12 +42,16 @@ export default function PlayPage() {
         method: "GET",
         url: "/api/commons",
         params: {
-          id: commonsId
-        }
-      }
+          id: commonsId,
+        },
+      },
     );
 
-  const { data: userCommonsProfits, error: userCommonsProfitsError, status: userCommonsProfitsStatus } =
+  const {
+    data: userCommonsProfits,
+    error: userCommonsProfitsError,
+    status: userCommonsProfitsStatus,
+  } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
       [`/api/profits/all/commons?userCommonsId=${commonsId}`],
@@ -51,9 +59,9 @@ export default function PlayPage() {
         method: "GET",
         url: "/api/profits/all/commons",
         params: {
-          userCommonsId: commonsId
-        }
-      }
+          userCommonsId: commonsId,
+        },
+      },
     );
 
 
@@ -100,21 +108,25 @@ export default function PlayPage() {
   };
 
   return (
-     <div style={{ backgroundSize: 'cover', backgroundImage: `url(${Background})` }}>
-      <BasicLayout >
-        <Container >
-          { !!currentUser &&  <CommonsPlay currentUser={currentUser} /> }
-          { !!commons && <CommonsOverview commons={commons} />}
+    <div style={{
+      backgroundSize: "cover",
+      backgroundImage: `url(${Background})`,
+    }}>
+      <BasicLayout>
+        <Container>
+          {!!currentUser && <CommonsPlay currentUser={currentUser} />}
+          {!!commons && <CommonsOverview commons={commons} />}
           <br />
-          { !!userCommons &&
-            <CardGroup >
+          {!!userCommons &&
+            <CardGroup>
               <FarmStats userCommons={userCommons} />
-              <ManageCows userCommons={userCommons} onBuy={onBuy} onSell={onSell} />
+              <ManageCows userCommons={userCommons} commons={commons}
+                          onBuy={onBuy} onSell={onSell} />
               <Profits userCommons={userCommons} profits={userCommonsProfits} />
             </CardGroup>
           }
         </Container>
       </BasicLayout>
     </div>
-  )
+  );
 }
