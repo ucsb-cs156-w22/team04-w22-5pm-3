@@ -15,31 +15,34 @@ describe("CommonsOverview tests", () => {
             const date2 = new Date(end);
         
             // One day in milliseconds
-            const test_oneDay = 1000 * 60 * 60 * 24;
+            const oneDay = 1000 * 60 * 60 * 24;
         
             // Calculating the time difference between two dates
-            const test_diffInTime = date2.getTime() - date1.getTime();
+            const diffInTime = date2.getTime() - date1.getTime();
         
             // Calculating the no. of days between two dates
-            const test_diffInDays = Math.round(test_diffInTime / test_oneDay);
+            const diffInDays = Math.round(diffInTime / oneDay);
         
-            return test_diffInDays;
+            return diffInDays;
         }
         
         function test_getEndDate(timestamp) {
-            function test_pad(n) { return n < 10 ? '0' + n : n; }
+            function pad(n) { return n < 10 ? '0' + n : n; }
             // Convert timestamp to JavaScript Date object
             let end = new Date(timestamp);
             // Return desired formatting (YYYY-MM-DD)
-            return `${end.getUTCFullYear()}-${test_pad(end.getUTCMonth()+1)}-${test_pad(end.getUTCDate())}`;
+            return `${end.getUTCFullYear()}-${pad(end.getUTCMonth()+1)}-${pad(end.getUTCDate())}`;
         }
 
-        let start, now, end = new Date();
+        var start, end, now = new Date();
+        var result = getNumberOfDays(start, now);
+        var endDate = getEndDate(end);
         const title = getByTestId('title');
         expect(title).toBeInTheDocument();
         expect(typeof(title.textContent)).toBe('string');
         expect(test_getNumberOfDays(start, now)).toEqual(getNumberOfDays(start, now));
         expect(test_getEndDate(end)).toEqual(getEndDate(end));
+        expect("Today is day " + result + "! This game will end on " + endDate + ".").toEqual(title.textContent);
 
 
     });
