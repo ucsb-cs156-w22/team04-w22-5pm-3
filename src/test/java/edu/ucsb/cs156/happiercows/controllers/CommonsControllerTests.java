@@ -128,6 +128,7 @@ public class CommonsControllerTests extends ControllerTestCase {
       .milkPrice(20.20)
       .startingBalance(1000.10)
       .startingDate(ldt)
+      .endingDate(ldt)
       .id(1L)
       .build();
 
@@ -172,6 +173,7 @@ public class CommonsControllerTests extends ControllerTestCase {
       .milkPrice(10.20)
       .startingBalance(500.00)
       .startingDate(ldt)
+      .endingDate(ldt)
       .build();
 
     UserCommons uc = UserCommons.builder()
