@@ -4,7 +4,7 @@ import { useCurrentUser } from "main/utils/currentUser";
 import CommonsPlay from "main/components/Commons/CommonsPlay";
 import { useParams } from "react-router-dom";
 import CommonsOverview from "main/components/Commons/CommonsOverview";
-import { CardGroup, Container } from "react-bootstrap";
+import { Container, CardGroup } from "react-bootstrap";
 import ManageCows from "main/components/Commons/ManageCows";
 import FarmStats from "main/components/Commons/FarmStats";
 import Profits from "main/components/Commons/Profits";
@@ -17,11 +17,7 @@ export default function PlayPage() {
   const { commonsId } = useParams();
   const { data: currentUser } = useCurrentUser();
 
-  const {
-    data: userCommons,
-    error: userCommonsError,
-    status: userCommonsStatus,
-  } =
+  const { data: userCommons, error: userCommonsError, status: userCommonsStatus } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
       [`/api/usercommons/forcurrentuser?commonsId=${commonsId}`],
@@ -29,12 +25,10 @@ export default function PlayPage() {
         method: "GET",
         url: "/api/usercommons/forcurrentuser",
         params: {
-          commonsId: commonsId,
-        },
-      },
+          commonsId: commonsId
+        }
+      }
     );
-
-  console.log("userCommons:", userCommons);
 
   const { data: commons, error: commonsError, status: commonsStatus } =
     useBackend(
@@ -44,9 +38,9 @@ export default function PlayPage() {
         method: "GET",
         url: "/api/commons",
         params: {
-          id: commonsId,
-        },
-      },
+          id: commonsId
+        }
+      }
     );
 
   const { data: userCommonsProfits, error: userCommonsProfitsError, status: userCommonsProfitsStatus } =

@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useCurrentUser } from "main/utils/currentUser";
@@ -8,7 +8,7 @@ import { useCurrentUser } from "main/utils/currentUser";
 //  queryKey ["/api/users","4"]  for "/api/users?id=4"
 
 // For axiosParameters
-//
+//   
 // {
 //     method: 'post',
 //     url: '/user/12345',
@@ -17,7 +17,7 @@ import { useCurrentUser } from "main/utils/currentUser";
 //       lastName: 'Flintstone'
 //     }
 //  }
-//
+// 
 
 // GET Example:
 // useBackend(
@@ -46,9 +46,9 @@ export function useBackend(queryKey, axiosParameters, initialData) {
 }
 
 const reportAxiosError = (error) => {
-  console.error("Axios Error:", error);
-  toast(`Axios Error: ${error}`);
-  return null;
+    console.error("Axios Error:", error);
+    toast(`Axios Error: ${error}`);
+    return null;
 };
 
 const wrappedParams = async (params) => {
@@ -61,21 +61,20 @@ const wrappedParams = async (params) => {
 };
 
 export function useBackendMutation(objectToAxiosParams, useMutationParams, queryKey = null) {
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-  return useMutation((object) => wrappedParams(objectToAxiosParams(object)), {
-    onError: (data) => {
-      toast(`${data}`);
-    },
-    // Stryker disable all: Not sure how to set up the complex behavior needed to test this
-    onSettled: () => {
-      if (queryKey !== null) {
-        queryClient.invalidateQueries(queryKey);
-      }
-    },
-    // Stryker enable all
-    retry: false,
-    ...useMutationParams,
-  });
+    return useMutation((object) => wrappedParams(objectToAxiosParams(object)), {
+        onError: (data) => {
+            toast(`${data}`)
+        },
+        // Stryker disable all: Not sure how to set up the complex behavior needed to test this
+        onSettled: () => {
+            if (queryKey !== null)
+                queryClient.invalidateQueries(queryKey);
+        },
+        // Stryker enable all
+        retry: false,
+        ...useMutationParams
+    })
 }
 
