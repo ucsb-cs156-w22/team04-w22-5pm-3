@@ -88,9 +88,9 @@ public class CommonsController extends ApiController {
   public ResponseEntity<String> joinCommon(
       @ApiParam("commonsId") @RequestParam Long commonsId) throws Exception {
     User u = getCurrentUser().getUser();
-    Long userId = u.getId();
-    Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
+    long userId = u.getId();
     Commons joinedCommons = commonsRepository.findById(commonsId).orElseThrow( ()->new EntityNotFoundException(Commons.class, commonsId));
+    Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
     if (userCommonsLookup.isPresent()) {
       // user is already a member of this commons
       String body = mapper.writeValueAsString(joinedCommons);
