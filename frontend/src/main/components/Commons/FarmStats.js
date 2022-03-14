@@ -4,7 +4,8 @@ import Cash from "./../../../assets/Cash.png";
 import Health from "./../../../assets/Health.png";
 
 const FarmStats = ({ userCommons }) => {
-  let cowHealth = userCommons?.cowHealth?.toFixed(2);
+  console.log(userCommons);
+  let cowHealth = userCommons?.cowHealth?.toFixed?.(2);
   if (cowHealth == null) {
     cowHealth = parseFloat(cowHealth);
   } else {

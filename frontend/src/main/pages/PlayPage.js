@@ -54,14 +54,16 @@ export default function PlayPage() {
   } =
     useBackend(
       // Stryker disable next-line all : don't test internal caching of React Query
-      [`/api/profits/all/commons?userCommonsId=${commonsId}`],
+      [`/api/profits/all/commons?userCommonsId=${userCommons?.id}`],
       {  // Stryker disable next-line all : GET is the default, so changing this to "" doesn't introduce a bug
         method: "GET",
         url: "/api/profits/all/commons",
         params: {
-          userCommonsId: commonsId,
+          userCommonsId: userCommons?.id,
         },
       },
+      undefined,
+      !!userCommons?.id,
     );
 
 
