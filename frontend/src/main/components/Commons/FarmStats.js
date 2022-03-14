@@ -4,6 +4,10 @@ import Cash from "./../../../assets/Cash.png";
 import Health from "./../../../assets/Health.png";
 
 const FarmStats = ({ userCommons }) => {
+  let cowHealth = userCommons?.cowHealth?.toFixed(2);
+  if (cowHealth === "NaN") {
+    cowHealth = "Loading...";
+  }
   return (
     <Card>
       <Card.Header as="h5">Your Farm Stats</Card.Header>
@@ -16,13 +20,13 @@ const FarmStats = ({ userCommons }) => {
           <img class="icon" src={Cash} alt="Cash"></img>
         </Card.Text>
         <Card.Text>
-          Total Wealth: ${userCommons?.totalWealth?.toFixed(2)}
+          Total Wealth: ${userCommons?.totalWealth?.toFixed(2) ?? "Loading..."}
         </Card.Text>
         <Card.Text>
           <img class="icon" src={Health} alt="Health"></img>
         </Card.Text>
         <Card.Text>
-          Cow Health: {parseFloat(userCommons?.cowHealth?.toFixed(2))}%
+          Cow Health: {cowHealth}%
         </Card.Text>
         <Card.Text>
           <progress id="health" value={userCommons?.cowHealth}
