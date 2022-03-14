@@ -88,21 +88,23 @@ public class CommonsController extends ApiController {
   public ResponseEntity<String> joinCommon(
       @ApiParam("commonsId") @RequestParam Long commonsId) throws Exception {
     User u = getCurrentUser().getUser();
-    Long userId = u.getId();
+    long userId = u.getId();
+    Commons joinedCommons = commonsRepository.findById(commonsId).orElseThrow( ()->new EntityNotFoundException(Commons.class, commonsId));
     Optional<UserCommons> userCommonsLookup = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId);
     if (userCommonsLookup.isPresent()) {
       // user is already a member of this commons
-      Commons joinedCommons = commonsRepository.findById(commonsId).orElseThrow( ()->new EntityNotFoundException(Commons.class, commonsId));
       String body = mapper.writeValueAsString(joinedCommons);
       return ResponseEntity.ok().body(body);
     }
     UserCommons uc = UserCommons.builder()
         .commonsId(commonsId)
+        .cowHealth(100)
+        .cowPrice(joinedCommons.getCowPrice())
+        .numCows(1)
+        .totalWealth(joinedCommons.getStartingBalance())
         .userId(userId)
-        .totalWealth(0)
         .build();
     userCommonsRepository.save(uc);
-    Commons joinedCommons = commonsRepository.findById(commonsId).orElseThrow( ()->new EntityNotFoundException(Commons.class, commonsId));
     String body = mapper.writeValueAsString(joinedCommons);
     return ResponseEntity.ok().body(body);
   }
@@ -117,12 +119,12 @@ public class CommonsController extends ApiController {
     UserCommons uc = userCommonsRepository.findByCommonsIdAndUserId(commonsId, userId)
       .orElseThrow(
           () -> new EntityNotFoundException(UserCommons.class, "commonsId", commonsId, "userId", userId));;
-      
+
     userCommonsRepository.deleteById(uc.getId());
 
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
-  
+
   @ApiOperation("Delete a commons by id")
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("delete")

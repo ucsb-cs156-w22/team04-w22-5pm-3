@@ -179,14 +179,20 @@ public class CommonsControllerTests extends ControllerTestCase {
     UserCommons uc = UserCommons.builder()
         .userId(1L)
         .commonsId(2L)
-        .totalWealth(0)
+        .numCows(1)
+        .totalWealth(500)
+        .cowPrice(100.10)
+        .cowHealth(100)
         .build();
 
     UserCommons ucSaved = UserCommons.builder()
         .id(17L)
         .userId(1L)
         .commonsId(2L)
-        .totalWealth(0)
+        .numCows(1)
+        .totalWealth(500)
+        .cowPrice(100.10)
+        .cowHealth(100)
         .build();
 
     String requestBody = mapper.writeValueAsString(uc);
@@ -255,7 +261,6 @@ public class CommonsControllerTests extends ControllerTestCase {
 
     String requestBody = mapper.writeValueAsString(uc);
 
-    when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.empty());
     when(commonsRepository.findById(eq(2L))).thenReturn(Optional.empty());
 
     MvcResult response = mockMvc
@@ -263,8 +268,6 @@ public class CommonsControllerTests extends ControllerTestCase {
             .characterEncoding("utf-8").content(requestBody))
         .andExpect(status().isNotFound()).andReturn();
 
-    verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(2L, 1L);
-    verify(userCommonsRepository, times(1)).save(uc);
     verify(commonsRepository, times(1)).findById(2L);
 
     Map<String, Object> json = responseToJson(response);
@@ -302,12 +305,10 @@ public class CommonsControllerTests extends ControllerTestCase {
   @Test
   public void join_commons_already_joined_nonexistent_test() throws Exception {
 
-    Commons c = Commons.builder().id(2L).name("Example Commons").build();
     UserCommons uc = UserCommons.builder().userId(1L).commonsId(2L).totalWealth(0).build();
 
     String requestBody = mapper.writeValueAsString(uc);
 
-    when(userCommonsRepository.findByCommonsIdAndUserId(2L, 1L)).thenReturn(Optional.of(uc));
     when(commonsRepository.findById(2L)).thenReturn(Optional.empty());
 
     MvcResult response = mockMvc
@@ -315,8 +316,7 @@ public class CommonsControllerTests extends ControllerTestCase {
             .characterEncoding("utf-8").content(requestBody))
         .andExpect(status().isNotFound()).andReturn();
 
-    verify(userCommonsRepository, times(1)).findByCommonsIdAndUserId(2L, 1L);
-    verify(userCommonsRepository, times(0)).save(uc);
+    verify(commonsRepository, times(1)).findById(2L);
 
     Map<String, Object> json = responseToJson(response);
     assertEquals("EntityNotFoundException", json.get("type"));
