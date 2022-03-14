@@ -4,21 +4,20 @@ import Cash from "./../../../assets/Cash.png";
 import Health from "./../../../assets/Health.png";
 
 const FarmStats = ({ userCommons }) => {
-  console.log(userCommons);
-  let cowHealth = userCommons?.cowHealth?.toFixed?.(2);
-  if (cowHealth == null) {
-    cowHealth = parseFloat(cowHealth);
-  } else {
-    cowHealth = "Loading...";
+  let cowHealth = "Loading...";
+  let totalWealth = "Loading...";
+  try {
+    cowHealth = parseFloat(userCommons.cowHealth.toFixed(2));
+  } catch (error) {
+    console.error(error);
   }
-  let totalWealth = userCommons?.totalWealth;
-  if (totalWealth == null) {
+  try {
     totalWealth = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
-    }).format(totalWealth);
-  } else {
-    totalWealth = "Loading...";
+    }).format(userCommons.totalWealth);
+  } catch (error) {
+    console.error(error);
   }
   return (
     <Card>
@@ -32,7 +31,7 @@ const FarmStats = ({ userCommons }) => {
           <img class="icon" src={Cash} alt="Cash"></img>
         </Card.Text>
         <Card.Text>
-          Total Wealth: ${totalWealth}
+          Total Wealth: {totalWealth}
         </Card.Text>
         <Card.Text>
           <img class="icon" src={Health} alt="Health"></img>
