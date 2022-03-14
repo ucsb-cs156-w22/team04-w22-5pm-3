@@ -10,6 +10,7 @@ const FarmStats = ({ userCommons }) => {
     cowHealth = parseFloat(userCommons.cowHealth.toFixed(2));
   } catch (error) {
     console.error(error);
+    console.error(userCommons);
   }
   try {
     totalWealth = new Intl.NumberFormat("en-US", {
@@ -18,6 +19,7 @@ const FarmStats = ({ userCommons }) => {
     }).format(userCommons.totalWealth);
   } catch (error) {
     console.error(error);
+    console.error(userCommons);
   }
   return (
     <Card>

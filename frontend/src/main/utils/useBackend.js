@@ -26,6 +26,8 @@ import { useCurrentUser } from "main/utils/currentUser";
 //     []
 // );
 
+// the parameter 'enabled' is passed to React-query
+// this can be used to implement dependent queries as explained here: https://react-query.tanstack.com/guides/dependent-queries/
 export function useBackend(queryKey, axiosParameters, initialData, enabled = true) {
   const { data: currentUser } = useCurrentUser();
   return useQuery(queryKey, async () => {
