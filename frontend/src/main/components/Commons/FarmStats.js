@@ -5,13 +5,13 @@ import Health from "./../../../assets/Health.png";
 
 const FarmStats = ({ userCommons }) => {
   let cowHealth = userCommons?.cowHealth?.toFixed(2);
-  if (cowHealth) {
+  if (cowHealth == null) {
     cowHealth = parseFloat(cowHealth);
   } else {
     cowHealth = "Loading...";
   }
   let totalWealth = userCommons?.totalWealth;
-  if (totalWealth) {
+  if (totalWealth == null) {
     totalWealth = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD",
