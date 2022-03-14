@@ -5,8 +5,19 @@ import Health from "./../../../assets/Health.png";
 
 const FarmStats = ({ userCommons }) => {
   let cowHealth = userCommons?.cowHealth?.toFixed(2);
-  if (cowHealth === "NaN") {
+  if (cowHealth) {
+    cowHealth = parseFloat(cowHealth);
+  } else {
     cowHealth = "Loading...";
+  }
+  let totalWealth = userCommons?.totalWealth;
+  if (totalWealth) {
+    totalWealth = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(totalWealth);
+  } else {
+    totalWealth = "Loading...";
   }
   return (
     <Card>
@@ -20,7 +31,7 @@ const FarmStats = ({ userCommons }) => {
           <img class="icon" src={Cash} alt="Cash"></img>
         </Card.Text>
         <Card.Text>
-          Total Wealth: ${userCommons?.totalWealth?.toFixed(2) ?? "Loading..."}
+          Total Wealth: ${totalWealth}
         </Card.Text>
         <Card.Text>
           <img class="icon" src={Health} alt="Health"></img>
